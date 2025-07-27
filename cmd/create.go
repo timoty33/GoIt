@@ -23,13 +23,14 @@ var createCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("❌ Erro: %w", err)
 		}
-		nameVerify, err := utils.TitleNameVerify(nome)
-		if err != nil {
-			return fmt.Errorf("❌ O nome não pode ser usado: %w", err)
-		}
 
 		switch tipo {
 		case "handler":
+
+			nameVerify, err := utils.TitleNameVerify(nome)
+			if err != nil {
+				return fmt.Errorf("❌ O nome não pode ser usado: %w", err)
+			}
 
 			if newFile {
 				err := create.CreateHandlerFile(nome, method, configs)
@@ -107,6 +108,18 @@ func loadDotEnv() (string, error) {
 
 				fmt.Println("Instalação completa!")
 			}
+
+		case "route":
+			if handlerName == "" {
+				return fmt.Errorf("❌ Você não definiu o nome de um handler para ser atribuído a rota, %s", handlerName)
+			}
+
+			err := create.UpdateRoutesFile(nome, method, handlerName, configs)
+			if err != nil {
+				return fmt.Errorf("❌ Erro ao criar rota, %w", err)
+			}
+
+			fmt.Printf("Rota %s criada com sucesso", nome)
 		}
 
 		return nil

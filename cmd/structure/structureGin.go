@@ -37,7 +37,7 @@ type Server struct {
 
 func New() *Server {
 	r := gin.Default()
-	routes.Registerroutes(r)
+	routes.RegisteRroutes(r)
 
 	return &Server{engine: r}
 }
@@ -80,8 +80,6 @@ func RegisterRoutes(r *gin.Engine) {
 // goit:add-dtos-here
 `
 	middlewareGoContent := `package middleware
-
-import "github.com/gin-gonic/gin"
 
 // Toda vez que você ver // goit: <-- Isso é um marcador e não pode ser removido (esse comentário pode)
 // goit:add-middlewares-here
