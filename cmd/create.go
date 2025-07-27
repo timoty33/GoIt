@@ -33,12 +33,12 @@ var createCmd = &cobra.Command{
 			}
 
 			if newFile {
-				err := create.CreateHandlerFile(nome, method, configs)
+				err := create.CreateHandlerFile(nome, method, configs, handlerParams)
 				if err != nil {
 					return fmt.Errorf("❌ Erro ao criar handler: %w", err)
 				}
 			} else {
-				err := create.CreateHandler(nome, method, configs)
+				err := create.CreateHandler(nome, method, configs, handlerParams)
 				if err != nil {
 					return fmt.Errorf("❌ Erro ao criar handler: %w", err)
 				}

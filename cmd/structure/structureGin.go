@@ -37,7 +37,7 @@ type Server struct {
 
 func New() *Server {
 	r := gin.Default()
-	routes.RegisteRroutes(r)
+	routes.RegisterRoutes(r)
 
 	return &Server{engine: r}
 }
