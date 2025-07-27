@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"goit/utils"
 	"os"
-	"path/filepath"
 	"strings"
 )
 
@@ -22,18 +21,16 @@ func UpdateRoutesFile(routeName, method, handlerName string, configs utils.Confi
 		return err
 	}
 
-	routesFilePath := filepath.Join(configs.RoutesFile)
-	contentBytes, err := os.ReadFile(routesFilePath)
+	content, err := utils.ReadFile(configs.RoutesFile)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao ler o arquivo de rotas '%s': %w", routesFilePath, err)
+		return fmt.Errorf("❌ Erro ao ler arquivo: %w", err)
 	}
-	content := string(contentBytes)
 
 	// Usa a função utilitária para inserir o conteúdo. A indentação é adicionada aqui.
 	newContent, err := utils.InsertAfterPlaceholder(content, placeholder, "\t"+newRouteLine)
 	if err != nil {
-		return fmt.Errorf("❌ Falha ao atualizar o arquivo de rotas '%s': %w", routesFilePath, err)
+		return fmt.Errorf("❌ Falha ao atualizar o arquivo de rotas '%s': %w", configs.RoutesFile, err)
 	}
 
-	return os.WriteFile(routesFilePath, []byte(newContent), 0644)
+	return os.WriteFile(configs.RoutesFile, []byte(newContent), 0644)
 }

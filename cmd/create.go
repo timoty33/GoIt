@@ -56,7 +56,7 @@ var createCmd = &cobra.Command{
 				}
 			}
 
-			return nil
+			fmt.Println("Handler criado com sucesso!")
 
 		case "env":
 			content := `package config
@@ -109,6 +109,8 @@ func loadDotEnv() (string, error) {
 				fmt.Println("Instalação completa!")
 			}
 
+			fmt.Println("Env criado com sucesso!")
+
 		case "route":
 			if handlerName == "" {
 				return fmt.Errorf("❌ Você não definiu o nome de um handler para ser atribuído a rota, %s", handlerName)
@@ -120,6 +122,32 @@ func loadDotEnv() (string, error) {
 			}
 
 			fmt.Printf("Rota %s criada com sucesso", nome)
+
+		case "dto":
+			nameVerify, err := utils.TitleNameVerify(nome)
+			if err != nil {
+				return fmt.Errorf("❌ O nome não pode ser usado: %w", err)
+			}
+
+			if newFile {
+				err := create.CreateDtoNewFile(dtoCamps, nameVerify, configs)
+				if err != nil {
+					return fmt.Errorf("❌ Erro ao criar DTO novo: %w", err)
+				}
+			} else {
+				err := create.CreateDto(dtoCamps, nameVerify, configs)
+				if err != nil {
+					return fmt.Errorf("❌ Erro ao criar DTO embutido: %w", err)
+				}
+			}
+
+			err = create.UpdateHandlerWithDto(dtoMode, handlerPath, handlerName)
+			if err != nil {
+				return fmt.Errorf("❌ Erro ao injetar DTO no handler: %w", err)
+			}
+
+			fmt.Println("DTO criado e handler atualizado com sucesso!")
+
 		}
 
 		return nil
