@@ -65,47 +65,71 @@ type %s struct {
 	return nil
 }
 
-func UpdateHandlerWithDto(mode, fullPath, handlerName string) error {
-	content, err := utils.ReadFile(fullPath)
+func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Config) error {
+	handlerFolder := configs.HandlersFolder
+	files, err := os.ReadDir(handlerFolder)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao ler arquivo: %w", err)
+		return fmt.Errorf("❌ Erro ao ler pasta de handlers: %w", err)
 	}
 
 	// Regex para encontrar a função do handler
 	caso := fmt.Sprintf(`func %s\(c \*gin.Context\) \{`, handlerName)
 	re, err := regexp.Compile(caso)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao utilizar regex: %w", err)
+		return fmt.Errorf("❌ Erro ao compilar regex: %w", err)
 	}
 
-	// Criar o código que será injetado, baseado no modo
+	// Criar o código que será injetado
 	var dtoCode string
-	mode = strings.ToUpper(mode)
-	switch mode {
+	switch strings.ToUpper(mode) {
 	case "INPUT":
-		dtoCode = createDtoContentInput(handlerName + "Input")
+		dtoCode = createDtoContentInput(dtoName)
 	case "OUTPUT":
-		dtoCode = createDtoContentOutput(handlerName + "Output")
+		dtoCode = createDtoContentOutput(dtoName)
 	default:
 		return fmt.Errorf("❌ Mode inválido: %s", mode)
 	}
 
-	// Injeta o código após a abertura da função
-	newContent := re.ReplaceAllStringFunc(content, func(match string) string {
-		return match + "\n" + dtoCode
-	})
+	found := false
 
-	// Escreve de volta no arquivo
-	if err := os.WriteFile(fullPath, []byte(newContent), 0644); err != nil {
-		return fmt.Errorf("❌ Erro ao salvar alterações: %w", err)
+	for _, file := range files {
+		if file.IsDir() || !strings.HasSuffix(file.Name(), ".go") {
+			continue
+		}
+
+		fullPath := filepath.Join(handlerFolder, file.Name())
+		content, err := utils.ReadFile(fullPath)
+		if err != nil {
+			return fmt.Errorf("❌ Erro ao ler %s: %w", fullPath, err)
+		}
+
+		if re.MatchString(content) {
+			found = true
+
+			// Injeta o código após abertura da função
+			newContent := re.ReplaceAllStringFunc(content, func(match string) string {
+				return match + "\n" + dtoCode
+			})
+
+			err := os.WriteFile(fullPath, []byte(newContent), 0644)
+			if err != nil {
+				return fmt.Errorf("❌ Erro ao salvar %s: %w", fullPath, err)
+			}
+
+			fmt.Printf("✅ DTO injetado com sucesso no handler %s (%s)\n", handlerName, file.Name())
+			break
+		}
 	}
 
-	fmt.Println("✅ DTO injetado com sucesso no handler.")
+	if !found {
+		return fmt.Errorf("❌ Handler '%s' não encontrado em nenhum arquivo de %s", handlerName, handlerFolder)
+	}
+
 	return nil
 }
 
 func createDtoContentInput(dtoName string) string {
-	return fmt.Sprintf(`	var input %s
+	return fmt.Sprintf(`	var input dto.%s
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
@@ -113,7 +137,7 @@ func createDtoContentInput(dtoName string) string {
 }
 
 func createDtoContentOutput(dtoName string) string {
-	return fmt.Sprintf(`	output := %s{
+	return fmt.Sprintf(`	output := dto.%s{
 		// preencha os campos aqui
 	}
 	c.JSON(200, output)`, dtoName)

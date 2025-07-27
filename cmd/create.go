@@ -124,6 +124,14 @@ func loadDotEnv() (string, error) {
 			fmt.Printf("Rota %s criada com sucesso", nome)
 
 		case "dto":
+			if handlerName == "" {
+				return fmt.Errorf("o nome do handler é obrigatório. Use --for ou -H")
+			}
+
+			if dtoMode != "input" && dtoMode != "output" {
+				return fmt.Errorf("valor inválido para --dto-mode. Use 'input' ou 'output'")
+			}
+
 			nameVerify, err := utils.TitleNameVerify(nome)
 			if err != nil {
 				return fmt.Errorf("❌ O nome não pode ser usado: %w", err)
@@ -141,7 +149,7 @@ func loadDotEnv() (string, error) {
 				}
 			}
 
-			err = create.UpdateHandlerWithDto(dtoMode, handlerPath, handlerName)
+			err = create.UpdateHandlerWithDto(dtoMode, handlerName, nameVerify, configs)
 			if err != nil {
 				return fmt.Errorf("❌ Erro ao injetar DTO no handler: %w", err)
 			}

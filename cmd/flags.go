@@ -12,7 +12,6 @@ var handlerName string
 var handlerParams []string
 var dtoCamps []string
 var dtoMode string
-var handlerPath string
 
 func init() {
 	// goit init
@@ -23,16 +22,15 @@ func init() {
 
 	// goit create
 	rootCmd.AddCommand(createCmd)
-	createCmd.Flags().BoolVar(&newFile, "new-file", false, "O código será criado em um novo arquivo ou em um arquivo existente?")
+	createCmd.Flags().BoolVarP(&newFile, "new-file", "n", false, "O código será criado em um novo arquivo ou em um arquivo existente?")
 
 	// handler/route
-	createCmd.Flags().StringVar(&routeName, "route-name", "", "Modifica o nome da rota que será criada, originalmente é o mesmo nome do handler.")
-	createCmd.Flags().StringVar(&handlerName, "handler-name", "", "Modifica o nome do handler que será atribuído à rota.") // Também é usado pelo dto para saber o handler
-	createCmd.Flags().StringSliceVar(&handlerParams, "params", []string{}, "Define parâmetros que serão automaticamente adicionados no handler.")
-	createCmd.Flags().StringVar(&method, "method", "", "Define o método para a rota.")
+	createCmd.Flags().StringVarP(&routeName, "route-name", "R", "", "Modifica o nome da rota que será criada, originalmente é o mesmo nome do handler.")
+	createCmd.Flags().StringVarP(&handlerName, "for", "H", "", "Modifica o nome do handler que será atribuído à rota.") // Também é usado pelo dto para saber o handler
+	createCmd.Flags().StringSliceVarP(&handlerParams, "params", "p", []string{}, "Define parâmetros que serão automaticamente adicionados no handler.")
+	createCmd.Flags().StringVarP(&method, "method", "M", "", "Define o método para a rota.")
 
 	// dto
-	createCmd.Flags().StringSliceVar(&dtoCamps, "dto-camps", []string{}, "Define os nomes dos campos da struct do DTO.")
-	createCmd.Flags().StringVar(&dtoMode, "dto-mode", "input", "Define o modo que o DTO será usado: input/output")
-	createCmd.Flags().StringVar(&handlerPath, "handler-path", "internal/handler/handler.go", "Define onde está aquele handler que será injetado o DTO.")
+	createCmd.Flags().StringSliceVarP(&dtoCamps, "dto-camps", "c", []string{}, "Define os nomes dos campos da struct do DTO.")
+	createCmd.Flags().StringVarP(&dtoMode, "dto-mode", "m", "input", "Define o modo que o DTO será usado: input/output")
 }
