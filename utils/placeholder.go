@@ -15,6 +15,6 @@ func InsertAfterPlaceholder(fileContent, placeholder, contentToAdd string) (stri
 	// Prepara a string de substituição: o próprio placeholder, uma nova linha e o conteúdo.
 	replacement := placeholder + "\n" + contentToAdd
 
-	// 2. Se existe, realiza a substituição com segurança.
+	// Se existe, realiza a substituição com segurança.
 	return strings.Replace(fileContent, placeholder, replacement, 1), nil
 }

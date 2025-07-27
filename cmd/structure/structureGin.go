@@ -86,6 +86,7 @@ import "github.com/gin-gonic/gin"
 // Toda vez que você ver // goit: <-- Isso é um marcador e não pode ser removido (esse comentário pode)
 // goit:add-middlewares-here
 `
+	gitignoreContent := `.goit.config.json`
 
 	err := os.Mkdir(nomeProjeto, permPasta)
 	if err != nil {
@@ -101,6 +102,7 @@ import "github.com/gin-gonic/gin"
 		"internal/routes/routes.go":         routesGoContent,
 		"internal/config/":                  "",
 		"README.md":                         "# " + nomeProjeto + "\n",
+		".gitignore":                        gitignoreContent,
 	}
 
 	for path, content := range projectLayout {

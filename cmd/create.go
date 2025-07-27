@@ -36,6 +36,11 @@ var createCmd = &cobra.Command{
 				if err != nil {
 					return fmt.Errorf("❌ Erro ao criar handler: %w", err)
 				}
+			} else {
+				err := create.CreateHandler(nome, method, configs)
+				if err != nil {
+					return fmt.Errorf("❌ Erro ao criar handler: %w", err)
+				}
 			}
 
 			if routeName == "" {
