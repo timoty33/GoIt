@@ -12,6 +12,7 @@ var handlerName string
 var handlerParams []string
 var camps []string
 var dtoMode string
+var modelName string
 
 func init() {
 	// goit init
@@ -33,4 +34,7 @@ func init() {
 	// dto
 	createCmd.Flags().StringSliceVarP(&camps, "camps", "c", []string{}, "Define os nomes dos campos da struct.") // dto/model
 	createCmd.Flags().StringVarP(&dtoMode, "dto-mode", "m", "input", "Define o modo que o DTO será usado: input/output")
+
+	// migration
+	createCmd.Flags().StringVar(&modelName, "model", "", "Define o nome do modelo que será usado na migration.")
 }

@@ -185,6 +185,20 @@ func loadDotEnv() (string, error) {
 					fmt.Println("Instalação completa!")
 				}
 			}
+
+		case "migration":
+			nameVerify, err := utils.TitleNameVerify(nome)
+			if err != nil {
+				return fmt.Errorf("❌ O nome não pode ser usado: %w", err)
+			}
+
+			err = create.CreateMigration(nome, nameVerify, modelName, configs)
+			if err != nil {
+				return fmt.Errorf("❌ Erro ao criar migration: %w", err)
+			}
+
+			fmt.Println("Migration criada com sucesso!")
+
 		}
 
 		return nil
