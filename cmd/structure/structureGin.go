@@ -130,13 +130,22 @@ func RegisterRoutes(r *gin.Engine) {
 		DtoFolder: "internal/dto",
 		DtoFile:   "internal/dto/dto.go",
 
-		ServicesFolder:   "internal/service",
 		ModelsFolder:     "internal/model",
 		MigrationsFolder: "internal/migrations",
-		DatabaseFolder:   "internal/database",
+		RepositoryFolder: "internal/repository",
 
-		Framework:   "gin",
-		ProjectName: nomeProjeto,
+		ServicesFolder: "internal/service",
+
+		DatabaseFolder: "internal/database",
+
+		Framework:           "gin",
+		ProgrammingLanguage: "go",
+		DataBase:            "none",
+		Orm:                 "gorm",
+		Port:                "8080",
+		ProjectName:         nomeProjeto,
+
+		HotReload: false,
 	}
 
 	if err := utils.SaveJsonConfig(configs, nomeProjeto); err != nil {

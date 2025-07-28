@@ -138,12 +138,12 @@ func loadDotEnv() (string, error) {
 			}
 
 			if newFile {
-				err := create.CreateDtoNewFile(dtoCamps, nameVerify, configs)
+				err := create.CreateDtoNewFile(camps, nameVerify, configs)
 				if err != nil {
 					return fmt.Errorf("❌ Erro ao criar DTO novo: %w", err)
 				}
 			} else {
-				err := create.CreateDto(dtoCamps, nameVerify, configs)
+				err := create.CreateDto(camps, nameVerify, configs)
 				if err != nil {
 					return fmt.Errorf("❌ Erro ao criar DTO embutido: %w", err)
 				}
@@ -156,6 +156,35 @@ func loadDotEnv() (string, error) {
 
 			fmt.Println("DTO criado e handler atualizado com sucesso!")
 
+		case "model":
+			nameVerify, err := utils.TitleNameVerify(nome)
+			if err != nil {
+				return fmt.Errorf("❌ O nome não pode ser usado: %w", err)
+			}
+
+			create.CreateModelNewFile(nome, nameVerify, configs, camps)
+			if err != nil {
+				return fmt.Errorf("❌ Erro ao criar modelo: %w", err)
+			}
+			fmt.Println("Modelo criado com sucesso!")
+
+			var install string
+			if configs.Orm == "gorm" {
+				fmt.Print(`Você deseja instalar o GORM
+[1] Sim
+[2] Não
+>> `)
+				fmt.Scanln(&install)
+
+				if install == "1" {
+					cmd := exec.Command("go", "get", "gorm.io/gorm")
+					cmd.Stdout = os.Stdout
+					cmd.Stderr = os.Stderr
+					cmd.Run()
+
+					fmt.Println("Instalação completa!")
+				}
+			}
 		}
 
 		return nil

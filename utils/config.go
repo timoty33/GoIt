@@ -12,11 +12,21 @@ type Config struct {
 	DtoFolder string `json:"dto_folder"`
 	DtoFile   string `json:"dto_file"`
 
-	ServicesFolder   string `json:"services_folder"`
-	ModelsFolder     string `json:"models_folder"`
+	ModelsFolder string `json:"models_folder"`
+
+	ServicesFolder string `json:"services_folder"`
+
 	MigrationsFolder string `json:"migrations_folder"`
+
+	RepositoryFolder string `json:"repository_folder"`
 	DatabaseFolder   string `json:"database_folder"`
 
-	Framework   string `json:"framework"`
-	ProjectName string `json:"project_name"`
+	Framework           string `json:"framework"`
+	DataBase            string `json:"database"`
+	Orm                 string `json:"orm"`
+	Port                string `json:"port"`
+	ProgrammingLanguage string `json:"programming_language"`
+	ProjectName         string `json:"project_name"`
+
+	HotReload bool `json:"hot_reload"`
 }

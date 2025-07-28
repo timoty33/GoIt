@@ -10,7 +10,7 @@ var method string
 var routeName string
 var handlerName string
 var handlerParams []string
-var dtoCamps []string
+var camps []string
 var dtoMode string
 
 func init() {
@@ -31,6 +31,6 @@ func init() {
 	createCmd.Flags().StringVarP(&method, "method", "M", "", "Define o método para a rota.")
 
 	// dto
-	createCmd.Flags().StringSliceVarP(&dtoCamps, "dto-camps", "c", []string{}, "Define os nomes dos campos da struct do DTO.")
+	createCmd.Flags().StringSliceVarP(&camps, "camps", "c", []string{}, "Define os nomes dos campos da struct.") // dto/model
 	createCmd.Flags().StringVarP(&dtoMode, "dto-mode", "m", "input", "Define o modo que o DTO será usado: input/output")
 }
