@@ -14,8 +14,8 @@ const (
 	ConfigFileName = ".goit.config.json"
 )
 
-// SaveJsonConfig salva a configuração do projeto em um arquivo JSON na raiz do projeto.
-func SaveJsonConfig(config Config, projectPath string) error {
+// SaveJsonConfigProject salva a configuração do projeto em um arquivo JSON na raiz do projeto.
+func SaveJsonConfigProject(config ConfigProject, projectPath string) error {
 	fullPath := filepath.Join(projectPath, ConfigFileName)
 
 	arquivo, err := os.Create(fullPath)

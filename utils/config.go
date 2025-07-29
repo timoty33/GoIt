@@ -1,6 +1,17 @@
 package utils
 
-type Config struct {
+type ConfigProject struct {
+	Framework           string `json:"framework"`
+	DataBase            string `json:"database"`
+	Orm                 string `json:"orm"`
+	Port                string `json:"port"`
+	ProgrammingLanguage string `json:"programming_language"`
+	ProjectName         string `json:"project_name"`
+
+	HotReload bool `json:"hot_reload"`
+}
+
+type ConfigPaths struct {
 	RoutesFile string `json:"routes_file"`
 
 	HandlersFile   string `json:"handlers_file"`
@@ -20,13 +31,4 @@ type Config struct {
 
 	RepositoryFolder string `json:"repository_folder"`
 	DatabaseFolder   string `json:"database_folder"`
-
-	Framework           string `json:"framework"`
-	DataBase            string `json:"database"`
-	Orm                 string `json:"orm"`
-	Port                string `json:"port"`
-	ProgrammingLanguage string `json:"programming_language"`
-	ProjectName         string `json:"project_name"`
-
-	HotReload bool `json:"hot_reload"`
 }

@@ -2,9 +2,10 @@ package structure
 
 import (
 	"fmt"
-	"goit/utils"
+	"goit/cmd"
+	"goit/cmd/file"
 	"os"
-	"path/filepath"
+	"os/exec"
 )
 
 const (
@@ -12,144 +13,37 @@ const (
 	permArquivo = 0644
 )
 
+func GetModGin(projectPath string) error {
+	cmd := exec.Command("go", "get", "github.com/gin-gonic/gin")
+	cmd.Dir = projectPath
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("falha ao executar 'go get': %w", err)
+	}
+
+	cmd = exec.Command("go", "mod", "tidy")
+	cmd.Dir = projectPath
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
+
 func StructureGin(nomeProjeto string) error {
-	mainGoContent := `package main
-
-import (
-	"` + nomeProjeto + `/internal/server"
-)
-
-func main() {
-	s := server.New()
-	s.Run()
-}
-`
-	serverGoContent := `package server
-
-import (
-	"github.com/gin-gonic/gin"
-	"` + nomeProjeto + `/internal/routes"
-)
-
-type Server struct {
-	engine *gin.Engine
-}
-
-func New() *Server {
-	r := gin.Default()
-	routes.RegisterRoutes(r)
-
-	return &Server{engine: r}
-}
-
-func (s *Server) Run() {
-	s.engine.Run()
-}
-`
-	handlerGoContent := `package handler
-
-import (
-	"net/http"
-	"github.com/gin-gonic/gin"
-)
-
-func Ping(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "pong"})
-}
-
-// Toda vez que você ver // goit: <-- Isso é um marcador e não pode ser removido (esse comentário pode)
-// goit:add-handlers-here
-`
-	routesGoContent := `package routes
-
-import (
-	"github.com/gin-gonic/gin"
-	"` + nomeProjeto + `/internal/handler"
-)
-
-func RegisterRoutes(r *gin.Engine) {
-	r.GET("/ping", handler.Ping)
-
-	// Toda vez que você ver // goit: <-- Isso é um marcador e não pode ser removido (esse comentário pode)
-	// goit:add-routes-here
-}
-`
-	dtoGoContent := `package dto
-
-// Toda vez que você ver // goit: <-- Isso é um marcador e não pode ser removido (esse comentário pode)
-// goit:add-dtos-here
-`
-	middlewareGoContent := `package middleware
-
-// Toda vez que você ver // goit: <-- Isso é um marcador e não pode ser removido (esse comentário pode)
-// goit:add-middlewares-here
-`
-	gitignoreContent := `.goit.config.json`
-
 	err := os.Mkdir(nomeProjeto, permPasta)
 	if err != nil {
 		return fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
 	}
 
-	projectLayout := map[string]string{
-		"cmd/main.go":                       mainGoContent,
-		"internal/server/server.go":         serverGoContent,
-		"internal/dto/dto.go":               dtoGoContent,
-		"internal/handler/handler.go":       handlerGoContent,
-		"internal/middleware/middleware.go": middlewareGoContent,
-		"internal/routes/routes.go":         routesGoContent,
-		"internal/config/":                  "",
-		"README.md":                         "# " + nomeProjeto + "\n",
-		".gitignore":                        gitignoreContent,
+	// Renderiza os templates
+	templates, err := file.PercorrerDiretorio("../templates")
+	if err != nil {
+		return fmt.Errorf("erro ao percorrer templates: %w", err)
 	}
 
-	for path, content := range projectLayout {
-		fullPath := filepath.Join(nomeProjeto, path)
-
-		dir := filepath.Dir(fullPath)
-		if err := os.MkdirAll(dir, permPasta); err != nil {
-			return fmt.Errorf("erro ao criar diretório %s: %w", dir, err)
-		}
-
-		if content != "" {
-			if err := os.WriteFile(fullPath, []byte(content), permArquivo); err != nil {
-				return fmt.Errorf("erro ao criar arquivo %s: %w", fullPath, err)
-			}
-		}
-	}
-
-	configs := utils.Config{
-		RoutesFile: "internal/routes/routes.go",
-
-		HandlersFolder: "internal/handler",
-		HandlersFile:   "internal/handler/handler.go",
-
-		MiddlewaresFolder: "internal/middleware",
-		MiddlewaresFile:   "internal/middleware/middleware.go",
-
-		DtoFolder: "internal/dto",
-		DtoFile:   "internal/dto/dto.go",
-
-		ModelsFolder:     "internal/model",
-		MigrationsFolder: "internal/migrations",
-		RepositoryFolder: "internal/repository",
-
-		ServicesFolder: "internal/service",
-
-		DatabaseFolder: "internal/database",
-
-		Framework:           "gin",
-		ProgrammingLanguage: "go",
-		DataBase:            "none",
-		Orm:                 "gorm",
-		Port:                "8080",
-		ProjectName:         nomeProjeto,
-
-		HotReload: true,
-	}
-
-	if err := utils.SaveJsonConfig(configs, nomeProjeto); err != nil {
-		return fmt.Errorf("erro ao salvar configurações: %w", err)
+	err = cmd.RenderTemplates(templates, cmd.TemplateData{ProjectName: nomeProjeto}, nomeProjeto)
+	if err != nil {
+		return fmt.Errorf("erro ao renderizar templates: %w", err)
 	}
 
 	return nil

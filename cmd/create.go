@@ -170,7 +170,7 @@ func loadDotEnv() (string, error) {
 			fmt.Println("Modelo criado com sucesso!")
 
 			var install string
-			if configs.Orm == "gorm" {
+			if configs.Project.Orm == "gorm" {
 				fmt.Print(`Você deseja instalar o GORM
 [1] Sim
 [2] Não

@@ -1,9 +1,5 @@
 package cmd
 
-// init
-var framework string
-var install bool
-
 // create
 var newFile bool
 var method string
@@ -17,9 +13,6 @@ var modelName string
 func init() {
 	// goit init
 	rootCmd.AddCommand(initCmd)
-	initCmd.Flags().StringVarP(&framework, "framework", "f", "", "Framework a ser utilizado (ex: gin)")
-	initCmd.Flags().BoolVarP(&install, "install", "i", false, "Instala as dependências após a criação do projeto")
-	initCmd.MarkFlagRequired("framework")
 
 	// goit create
 	rootCmd.AddCommand(createCmd)

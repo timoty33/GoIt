@@ -2,28 +2,72 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 
 	"goit/cmd/structure"
 
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
 )
 
-func getModGin(projectPath string) error {
-	cmd := exec.Command("go", "get", "github.com/gin-gonic/gin")
-	cmd.Dir = projectPath
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("falha ao executar 'go get': %w", err)
+func formulario() (string, string, string, string, string) {
+	var nomeProjeto string
+	var tipoProjeto string
+	var linguagemProjeto string
+	var frameworkProjeto string
+	var dbProjeto string
+
+	// Pergunta 1: nome do projeto
+	survey.AskOne(&survey.Input{
+		Message: "Qual o nome do projeto?",
+	}, &nomeProjeto)
+
+	// Pergunta 2: tipo do projeto (escolha única)
+	survey.AskOne(&survey.Select{
+		Message: "Escolha o tipo de projeto:",
+		Options: []string{"Frontend", "Backend", "FullStack"},
+		Default: "Backend",
+	}, &tipoProjeto)
+
+	// Pergunta 3: linguagens do projeto
+	if tipoProjeto == "FullStack" || tipoProjeto == "Backend" {
+
+		survey.AskOne(&survey.Select{
+			Message: "Escolha a linguagem do backend:",
+			Options: []string{"Go", "JavaScript", "TypeScript", "Python"},
+		}, &linguagemProjeto)
 	}
 
-	cmd = exec.Command("go", "mod", "tidy")
-	cmd.Dir = projectPath
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
+	// Pergunta 4: Framework do projeto
+	if linguagemProjeto == "Go" {
+
+		survey.AskOne(&survey.Select{
+			Message: "Escolha o framework que será usado:",
+			Options: []string{"Gin", "Echo", "Fiber"},
+		}, &frameworkProjeto)
+
+	} else if linguagemProjeto == "Python" {
+
+		survey.AskOne(&survey.Select{
+			Message: "Escolha o framework que será usado:",
+			Options: []string{"FastAPI", "Django", "Flask"},
+		}, &frameworkProjeto)
+
+	} else if linguagemProjeto == "JavaScript" || linguagemProjeto == "TypeScript" {
+
+		survey.AskOne(&survey.Select{
+			Message: "Escolha o framework que será usado:",
+			Options: []string{"Express", "NestJS", "Fastify"},
+		}, &frameworkProjeto)
+
+	}
+
+	// Pergunta 5: DB do projeto
+	survey.AskOne(&survey.Select{
+		Message: "Escolha o banco de dados que será usado:",
+		Options: []string{"SQLite", "PostgreSQL", "MySQL", "MongoDB", "Nenhuma"},
+	}, &dbProjeto)
+
+	return nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto
 }
 
 func createEstructure(nomeProjeto, framework string) error {
@@ -39,44 +83,13 @@ func createEstructure(nomeProjeto, framework string) error {
 }
 
 var initCmd = &cobra.Command{
-	Use:   "init [nome-do-projeto]",
+	Use:   "init",
 	Short: "Inicializa um novo projeto GoIt",
-	Long: `Cria uma estrutura de diretórios e arquivos padrão para um novo projeto Go.
+	Long: `Cria uma estrutura de diretórios e arquivos padrão para um novo projeto (backend, frontend, fullstack)
 
 Exemplo:
-  goit init meu-projeto-incrivel -f gin --install`,
-	Args: cobra.ExactArgs(1),
+  goit init`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 1 {
-			fmt.Fprint(os.Stderr, "O nome do projeto é obrigatório")
-			os.Exit(1)
-		}
-
-		nomeProjeto := args[0]
-
-		fmt.Printf("🚀 Iniciando a criação do projeto '%s' com o framework '%s'...\n", nomeProjeto, framework)
-
-		if err := createEstructure(nomeProjeto, framework); err != nil {
-			fmt.Fprintf(os.Stderr, "❌ Erro ao criar a estrutura do projeto: %v\n", err)
-			os.Exit(1)
-		}
-		fmt.Println("✅ Estrutura de diretórios e arquivos criada com sucesso.")
-
-		if err := structure.GoModInit(nomeProjeto); err != nil {
-			fmt.Fprintf(os.Stderr, "❌ Erro ao inicializar o go.mod: %v\n", err)
-			os.Exit(1)
-		}
-		fmt.Println("✅ go.mod inicializado.")
-
-		if install {
-			fmt.Println("📦 Instalando dependências...")
-			if err := getModGin(nomeProjeto); err != nil {
-				fmt.Fprintf(os.Stderr, "❌ Erro ao instalar dependências: %v\n", err)
-				os.Exit(1)
-			}
-			fmt.Println("✅ Dependências instaladas.")
-		}
-
-		fmt.Printf("\n🎉 Projeto '%s' criado com sucesso!\n\nPara começar:\n  cd %s\n  go run cmd/main.go\n", nomeProjeto, nomeProjeto)
+		nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto := formulario()
 	},
 }

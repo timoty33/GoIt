@@ -7,11 +7,11 @@ import (
 	"text/template"
 )
 
-type templateData struct{
+type TemplateData struct{
 	ProjectName string
 }
 
-func RenderTemplates(templates map[string]string, data templateData, outputDir string) error {
+func RenderTemplates(templates map[string]string, data TemplateData, outputDir string) error {
 	for path, content := range templates {
 		// Parse o conteúdo do template
 		tmpl, err := template.New(filepath.Base(path)).Parse(content)
