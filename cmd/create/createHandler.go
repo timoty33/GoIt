@@ -5,11 +5,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"goit/cmd/file"
 	"goit/utils"
+	"goit/utils/file"
 )
 
-func CreateHandlerFile(nomeHandler, method string, configs utils.Config, params []string) error {
+func CreateHandlerFile(nomeHandler, method string, configs utils.ConfigPaths, params []string) error {
 	nomeFunc, err := utils.TitleNameVerify(nomeHandler)
 	if err != nil {
 		return fmt.Errorf("❌ O nome não pode ser usado, %w", err)
@@ -41,7 +41,7 @@ func ` + nomeFunc + `(c *gin.Context) {
 	return nil
 }
 
-func CreateHandler(nomeHandler, method string, configs utils.Config, params []string) error {
+func CreateHandler(nomeHandler, method string, configs utils.ConfigPaths, params []string) error {
 	nomeFunc, err := utils.TitleNameVerify(nomeHandler)
 	if err != nil {
 		return fmt.Errorf("❌ O nome não pode ser usado, %w", err)

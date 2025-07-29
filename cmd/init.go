@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
-
 	"goit/cmd/structure"
+	"goit/utils"
+	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
@@ -38,21 +39,22 @@ func formulario() (string, string, string, string, string) {
 	}
 
 	// Pergunta 4: Framework do projeto
-	if linguagemProjeto == "Go" {
+	switch linguagemProjeto {
+	case "Go":
 
 		survey.AskOne(&survey.Select{
 			Message: "Escolha o framework que será usado:",
 			Options: []string{"Gin", "Echo", "Fiber"},
 		}, &frameworkProjeto)
 
-	} else if linguagemProjeto == "Python" {
+	case "Python":
 
 		survey.AskOne(&survey.Select{
 			Message: "Escolha o framework que será usado:",
-			Options: []string{"FastAPI", "Django", "Flask"},
+			Options: []string{"FastApi", "Django", "Flask"},
 		}, &frameworkProjeto)
 
-	} else if linguagemProjeto == "JavaScript" || linguagemProjeto == "TypeScript" {
+	case "JavaScript", "TypeScript":
 
 		survey.AskOne(&survey.Select{
 			Message: "Escolha o framework que será usado:",
@@ -70,18 +72,6 @@ func formulario() (string, string, string, string, string) {
 	return nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto
 }
 
-func createEstructure(nomeProjeto, framework string) error {
-	if framework == "gin" {
-		if err := structure.StructureGin(nomeProjeto); err != nil {
-			return err
-		}
-	} else {
-		return fmt.Errorf("framework '%s' não suportado", framework)
-	}
-
-	return nil
-}
-
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Inicializa um novo projeto GoIt",
@@ -89,7 +79,40 @@ var initCmd = &cobra.Command{
 
 Exemplo:
   goit init`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		var orm string
+
 		nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto := formulario()
+
+		switch linguagemProjeto {
+		case "Go":
+			orm = "gorm"
+		case "Python":
+			orm = "sqlalchemy"
+		case "JavaScript", "TypeScript":
+			orm = "prisma"
+		}
+
+		configs := utils.ConfigProject{
+			ProjectName:         nomeProjeto,
+			ProgrammingLanguage: linguagemProjeto,
+			Framework:           frameworkProjeto,
+			DataBase:            dbProjeto,
+			Port:                "8080",
+			Orm:                 orm,
+			HotReload:           true,
+		}
+
+		configPaths, err := structure.CreateStructure(nomeProjeto, linguagemProjeto, frameworkProjeto, tipoProjeto)
+		if err != nil {
+			return fmt.Errorf("erro ao criar estrutura: %w", err)
+		}
+
+		err = utils.SaveJsonConfigs(configs, configPaths, filepath.Join(nomeProjeto))
+		if err != nil {
+			return fmt.Errorf("erro ao salvar configurações: %w", err)
+		}
+
+		return nil
 	},
 }

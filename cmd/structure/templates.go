@@ -1,4 +1,4 @@
-package cmd
+package structure
 
 import (
 	"os"
@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-type TemplateData struct{
+type TemplateData struct {
 	ProjectName string
 }
 

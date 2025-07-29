@@ -2,13 +2,13 @@ package create
 
 import (
 	"fmt"
-	"goit/cmd/file"
 	"goit/utils"
+	"goit/utils/file"
 	"path/filepath"
 )
 
-func CreateModelNewFile(modelName, modelNameVerify string, configs utils.Config, camps []string) error {
-	if configs.Orm == "gorm" {
+func CreateModelNewFile(modelName, modelNameVerify string, configs utils.ConfigPaths, configsProject utils.ConfigProject, camps []string) error {
+	if configsProject.Orm == "gorm" {
 		content := fmt.Sprintf(`package model
 
 import (

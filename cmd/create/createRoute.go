@@ -2,8 +2,8 @@ package create
 
 import (
 	"fmt"
-	"goit/cmd/file"
 	"goit/utils"
+	"goit/utils/file"
 	"os"
 	"strings"
 )
@@ -16,7 +16,7 @@ func createRoute(routeName, method, handlerName string) (string, error) {
 }
 
 // UpdateRoutesFile lê o arquivo de rotas, insere a nova rota e salva o arquivo.
-func UpdateRoutesFile(routeName, method, handlerName string, configs utils.Config) error {
+func UpdateRoutesFile(routeName, method, handlerName string, configs utils.ConfigPaths) error {
 	newRouteLine, err := createRoute(routeName, method, handlerName)
 	if err != nil {
 		return err

@@ -2,14 +2,14 @@ package create
 
 import (
 	"fmt"
-	"goit/cmd/file"
 	"goit/utils"
+	"goit/utils/file"
 	"path/filepath"
 )
 
-func CreateMigration(name, nameVerify, modelName string, configs utils.Config) error {
-	if configs.Orm == "gorm" {
-		content := createMigrationFileContentGorm(nameVerify, modelName, configs)
+func CreateMigration(name, nameVerify, modelName string, configs utils.ConfigPaths, configsProject utils.ConfigProject) error {
+	if configsProject.Orm == "gorm" {
+		content := createMigrationFileContentGorm(nameVerify, modelName, configs, configsProject)
 
 		err := file.CreateArqVerify(configs.MigrationsFolder, filepath.Join(configs.MigrationsFolder, name+".go"), name+".go", content)
 		if err != nil {
@@ -27,13 +27,13 @@ func CreateMigration(name, nameVerify, modelName string, configs utils.Config) e
 	return nil
 }
 
-func createMigrationFileContentGorm(nameVerify, modelName string, configs utils.Config) string {
+func createMigrationFileContentGorm(nameVerify, modelName string, configs utils.ConfigPaths, configsProject utils.ConfigProject) string {
 	return `package migrations
 
 import (
     "gorm.io/gorm"
 
-	"` + configs.ProjectName + "/" + configs.ModelsFolder + `"
+	"` + configsProject.ProjectName + "/" + configs.ModelsFolder + `"
 )
 
 func ` + nameVerify + `(db *gorm.DB) error {

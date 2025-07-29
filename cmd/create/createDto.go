@@ -2,15 +2,15 @@ package create
 
 import (
 	"fmt"
-	"goit/cmd/file"
 	"goit/utils"
+	"goit/utils/file"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 )
 
-func CreateDto(camps []string, dtoName string, configs utils.Config) error {
+func CreateDto(camps []string, dtoName string, configs utils.ConfigPaths) error {
 	var content2 string
 
 	content1 := fmt.Sprintf("type %s struct{\n", dtoName)
@@ -37,7 +37,7 @@ func CreateDto(camps []string, dtoName string, configs utils.Config) error {
 	return nil
 }
 
-func CreateDtoNewFile(camps []string, dtoName string, configs utils.Config) error {
+func CreateDtoNewFile(camps []string, dtoName string, configs utils.ConfigPaths) error {
 	// Define nome do arquivo (ex: userinput.go) e caminhos
 	fileName := strings.ToLower(dtoName) + ".go"
 	fullPath := filepath.Join(configs.DtoFolder, fileName)
@@ -66,7 +66,7 @@ type %s struct {
 	return nil
 }
 
-func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Config) error {
+func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.ConfigPaths) error {
 	handlerFolder := configs.HandlersFolder
 	files, err := os.ReadDir(handlerFolder)
 	if err != nil {

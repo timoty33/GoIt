@@ -8,48 +8,74 @@ import (
 )
 
 const (
-	permPasta   = 0755
-	permArquivo = 0644
-	// ConfigFileName é o nome padrão para o arquivo de configuração do GoIt.
-	ConfigFileName = ".goit.config.json"
+	ConfigProjectFileName = ".goit.config.json"
+	ConfigPathsFileName   = ".goit.config.paths.json"
 )
 
 // SaveJsonConfigProject salva a configuração do projeto em um arquivo JSON na raiz do projeto.
-func SaveJsonConfigProject(config ConfigProject, projectPath string) error {
-	fullPath := filepath.Join(projectPath, ConfigFileName)
+func SaveJsonConfigs(configProject ConfigProject, configPaths ConfigPaths, projectPath string) error {
+	fullPathProject := filepath.Join(projectPath, ConfigProjectFileName)
+	fullPathPaths := filepath.Join(projectPath, ConfigPathsFileName)
 
-	arquivo, err := os.Create(fullPath)
+	arquivoConfigProject, err := os.Create(fullPathProject)
 	if err != nil {
-		return fmt.Errorf("erro ao criar o arquivo de configuração '%s': %w", fullPath, err)
+		return fmt.Errorf("erro ao criar o arquivo de configuração do projeto '%s': %w", fullPathProject, err)
 	}
-	defer arquivo.Close()
+	defer arquivoConfigProject.Close()
 
-	encoder := json.NewEncoder(arquivo)
+	arquivoConfigPaths, err := os.Create(fullPathPaths)
+	if err != nil {
+		return fmt.Errorf("erro ao criar o arquivo de configuração dos caminhos '%s': %w", fullPathPaths, err)
+	}
+	defer arquivoConfigPaths.Close()
+
+	encoder := json.NewEncoder(arquivoConfigProject)
 	encoder.SetIndent("", "  ") // Deixa o JSON formatado para melhor leitura
-	if err := encoder.Encode(config); err != nil {
-		return fmt.Errorf("erro ao escrever JSON no arquivo de configuração: %w", err)
+	if err := encoder.Encode(configProject); err != nil {
+		return fmt.Errorf("erro ao escrever JSON no arquivo de configuração do projeto: %w", err)
+	}
+
+	encoder = json.NewEncoder(arquivoConfigPaths)
+	encoder.SetIndent("", "  ") // Deixa o JSON formatado para melhor leitura
+	if err := encoder.Encode(configPaths); err != nil {
+		return fmt.Errorf("erro ao escrever JSON no arquivo de configuração dos caminhos: %w", err)
 	}
 
 	return nil
 }
 
 // LoadJsonConfig carrega a configuração do projeto a partir do diretório atual.
-func LoadJsonConfig() (Config, error) {
-	var config Config
+func LoadJsonConfig() (ConfigProject, ConfigPaths, error) {
+	var configProject ConfigProject
+	var configPaths ConfigPaths
 
-	arquivo, err := os.Open(ConfigFileName)
+	arquivoConfigProject, err := os.Open(ConfigProjectFileName)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return config, fmt.Errorf("arquivo de configuração '%s' não encontrado. Execute este comando na raiz do seu projeto GoIt", ConfigFileName)
+			return configProject, configPaths, fmt.Errorf("arquivo de configuração do projeto '%s' não encontrado", ConfigProjectFileName)
 		}
-		return config, fmt.Errorf("erro ao abrir o arquivo de configuração: %w", err)
+		return configProject, configPaths, fmt.Errorf("erro ao abrir o arquivo de configuração do projeto: %w", err)
 	}
-	defer arquivo.Close()
+	defer arquivoConfigProject.Close()
 
-	decoder := json.NewDecoder(arquivo)
-	if err := decoder.Decode(&config); err != nil {
-		return config, fmt.Errorf("erro ao decodificar o arquivo de configuração JSON: %w", err)
+	arquivoConfigPaths, err := os.Open(ConfigPathsFileName)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return configProject, configPaths, fmt.Errorf("arquivo de configuração dos caminhos '%s' não encontrado", ConfigPathsFileName)
+		}
+		return configProject, configPaths, fmt.Errorf("erro ao abrir o arquivo de configuração do projeto: %w", err)
+	}
+	defer arquivoConfigPaths.Close()
+
+	decoder := json.NewDecoder(arquivoConfigProject)
+	if err := decoder.Decode(&configProject); err != nil {
+		return configProject, configPaths, fmt.Errorf("erro ao decodificar o arquivo de configuração do projeto: %w", err)
 	}
 
-	return config, nil
+	decoder = json.NewDecoder(arquivoConfigPaths)
+	if err := decoder.Decode(&configPaths); err != nil {
+		return configProject, configPaths, fmt.Errorf("erro ao decodificar o arquivo de configuração dos caminhos: %w", err)
+	}
+
+	return configProject, configPaths, nil
 }
