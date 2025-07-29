@@ -6,6 +6,7 @@ import (
 	"goit/utils/file"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 const (
@@ -40,7 +41,7 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 	if tipoProjeto == "Backend" || tipoProjeto == "FullStack" {
 
 		// Renderiza os templates (backend, o front será criado com Vite)
-		templates, err := file.PercorrerDiretorio("../templates/" + linguagem + "/" + framework)
+		templates, err := file.PercorrerDiretorio(filepath.Join(GetTemplatesPath(), linguagem, framework))
 		if err != nil {
 			return configPaths, fmt.Errorf("erro ao percorrer templates: %w", err)
 		}

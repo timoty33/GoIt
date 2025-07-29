@@ -84,6 +84,8 @@ Exemplo:
 
 		nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto := formulario()
 
+		fmt.Println("Iniciando o projeto:", nomeProjeto)
+
 		switch linguagemProjeto {
 		case "Go":
 			orm = "gorm"
@@ -112,6 +114,21 @@ Exemplo:
 		if err != nil {
 			return fmt.Errorf("erro ao salvar configurações: %w", err)
 		}
+
+		fmt.Println("Estrutura do projeto criada com sucesso!")
+
+		fmt.Println("Iniciando o setup do projeto...")
+		if err := structure.Setup(nomeProjeto, linguagemProjeto); err != nil {
+			return fmt.Errorf("erro ao iniciar o setup: %w", err)
+		}
+		fmt.Println("Setup do projeto concluído com sucesso!")
+
+		// 		var depends string
+		// 		fmt.Print(`Você quer instalar as dependências do projeto?
+		// [1] Sim
+		// [2] Não
+		// >> `)
+		// 		fmt.Scanln(&depends)
 
 		return nil
 	},
