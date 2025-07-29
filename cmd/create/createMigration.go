@@ -2,6 +2,7 @@ package create
 
 import (
 	"fmt"
+	"goit/cmd/file"
 	"goit/utils"
 	"path/filepath"
 )
@@ -10,14 +11,14 @@ func CreateMigration(name, nameVerify, modelName string, configs utils.Config) e
 	if configs.Orm == "gorm" {
 		content := createMigrationFileContentGorm(nameVerify, modelName, configs)
 
-		err := utils.CreateArqVerify(configs.MigrationsFolder, filepath.Join(configs.MigrationsFolder, name+".go"), name+".go", content)
+		err := file.CreateArqVerify(configs.MigrationsFolder, filepath.Join(configs.MigrationsFolder, name+".go"), name+".go", content)
 		if err != nil {
 			return fmt.Errorf("❌ Erro ao criar migration: %w", err)
 		}
 	} else {
 		content := createMigrationFileContent(nameVerify)
 
-		err := utils.CreateArqVerify(configs.MigrationsFolder, filepath.Join(configs.MigrationsFolder, name+".go"), name+".go", content)
+		err := file.CreateArqVerify(configs.MigrationsFolder, filepath.Join(configs.MigrationsFolder, name+".go"), name+".go", content)
 		if err != nil {
 			return fmt.Errorf("❌ Erro ao criar migration: %w", err)
 		}

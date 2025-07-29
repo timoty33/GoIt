@@ -1,0 +1,13 @@
+package handler
+
+import (
+	"net/http"
+	"github.com/gin-gonic/gin"
+)
+
+func Ping(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "pong"})
+}
+
+// Toda vez que você ver // goit: <-- Isso é um marcador e não pode ser removido (esse comentário pode)
+// goit:add-handlers-here

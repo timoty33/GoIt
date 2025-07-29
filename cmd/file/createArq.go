@@ -1,4 +1,4 @@
-package utils
+package file
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ func CreateArqVerify(folder, fullPath, nome, content string) error {
 	}
 
 	// Cria o arquivo e escreve o content
-	if err := os.WriteFile(fullPath, []byte(content), permArquivo); err != nil {
+	if err := os.WriteFile(fullPath, []byte(content), 0644); err != nil {
 		return fmt.Errorf("erro ao criar arquivo %s: %w", fullPath, err)
 	}
 

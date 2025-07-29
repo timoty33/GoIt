@@ -2,6 +2,7 @@ package create
 
 import (
 	"fmt"
+	"goit/cmd/file"
 	"goit/utils"
 	"os"
 	"path/filepath"
@@ -18,7 +19,7 @@ func CreateDto(camps []string, dtoName string, configs utils.Config) error {
 	}
 	content := content1 + content2 + "}"
 
-	fileContent, err := utils.ReadFile(configs.DtoFile)
+	fileContent, err := file.ReadFile(configs.DtoFile)
 	if err != nil {
 		return fmt.Errorf("❌ Erro ao ler arquivo, %w", err)
 	}
@@ -56,7 +57,7 @@ type %s struct {
 `, filepath.Base(folder), dtoName, fields)
 
 	// Usa função utilitária para criar e salvar o arquivo com verificação
-	err := utils.CreateArqVerify(folder, fullPath, fileName, content)
+	err := file.CreateArqVerify(folder, fullPath, fileName, content)
 	if err != nil {
 		return fmt.Errorf("❌ Erro ao criar DTO: %w", err)
 	}
@@ -92,13 +93,13 @@ func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Confi
 
 	found := false
 
-	for _, file := range files {
-		if file.IsDir() || !strings.HasSuffix(file.Name(), ".go") {
+	for _, arquivo := range files {
+		if arquivo.IsDir() || !strings.HasSuffix(arquivo.Name(), ".go") {
 			continue
 		}
 
-		fullPath := filepath.Join(handlerFolder, file.Name())
-		content, err := utils.ReadFile(fullPath)
+		fullPath := filepath.Join(handlerFolder, arquivo.Name())
+		content, err := file.ReadFile(fullPath)
 		if err != nil {
 			return fmt.Errorf("❌ Erro ao ler %s: %w", fullPath, err)
 		}
@@ -116,7 +117,7 @@ func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Confi
 				return fmt.Errorf("❌ Erro ao salvar %s: %w", fullPath, err)
 			}
 
-			fmt.Printf("✅ DTO injetado com sucesso no handler %s (%s)\n", handlerName, file.Name())
+			fmt.Printf("✅ DTO injetado com sucesso no handler %s (%s)\n", handlerName, arquivo.Name())
 			break
 		}
 	}

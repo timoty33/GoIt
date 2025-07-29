@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"goit/cmd/file"
 	"goit/utils"
 )
 
@@ -33,7 +34,7 @@ func ` + nomeFunc + `(c *gin.Context) {
 
 	fullPath := filepath.Join(configs.HandlersFolder, nomeHandler+".go")
 
-	if err := utils.CreateArqVerify(configs.HandlersFolder, fullPath, nomeHandler, content); err != nil {
+	if err := file.CreateArqVerify(configs.HandlersFolder, fullPath, nomeHandler, content); err != nil {
 		return fmt.Errorf("❌ Algum erro aconteceu ao criar o arquivo: %w", err)
 	}
 

@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"goit/cmd/create"
+	"goit/cmd/file"
 	"goit/utils"
 	"os"
 	"os/exec"
@@ -91,7 +92,7 @@ func loadDotEnv() (string, error) {
 			}
 			defer env.Close()
 
-			utils.CreateArqVerify("internal/config", filepath.Join("internal", "config", nome+".go"), nome+".go", content)
+			file.CreateArqVerify("internal/config", filepath.Join("internal", "config", nome+".go"), nome+".go", content)
 
 			var install string
 			fmt.Print(`Você quer instalar o GoDotEnv?

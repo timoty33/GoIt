@@ -1,0 +1,13 @@
+package routes
+
+import (
+	"github.com/gin-gonic/gin"
+	"{{.ProjectName}}/internal/handler"
+)
+
+func RegisterRoutes(r *gin.Engine) {
+	r.GET("/ping", handler.Ping)
+
+	// Toda vez que você ver // goit: <-- Isso é um marcador e não pode ser removido (esse comentário pode)
+	// goit:add-routes-here
+}

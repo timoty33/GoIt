@@ -2,6 +2,7 @@ package create
 
 import (
 	"fmt"
+	"goit/cmd/file"
 	"goit/utils"
 	"path/filepath"
 )
@@ -17,7 +18,7 @@ import (
 %s
 `, createModelStringGorm(modelNameVerify, camps))
 
-		err := utils.CreateArqVerify(configs.ModelsFolder, filepath.Join(configs.ModelsFolder, modelName+".go"), modelName, content)
+		err := file.CreateArqVerify(configs.ModelsFolder, filepath.Join(configs.ModelsFolder, modelName+".go"), modelName, content)
 		if err != nil {
 			return fmt.Errorf("❌ Erro ao criar modelo: %w", err)
 		}
@@ -28,7 +29,7 @@ import (
 %s
 `, createModelString(modelNameVerify, camps))
 
-		err := utils.CreateArqVerify(configs.ModelsFolder, filepath.Join(configs.ModelsFolder, modelName+".go"), modelName, content)
+		err := file.CreateArqVerify(configs.ModelsFolder, filepath.Join(configs.ModelsFolder, modelName+".go"), modelName, content)
 		if err != nil {
 			return fmt.Errorf("❌ Erro ao criar modelo: %w", err)
 		}

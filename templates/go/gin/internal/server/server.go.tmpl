@@ -1,0 +1,21 @@
+package server
+
+import (
+	"github.com/gin-gonic/gin"
+	"{{.ProjectName}}/internal/routes"
+)
+
+type Server struct {
+	engine *gin.Engine
+}
+
+func New() *Server {
+	r := gin.Default()
+	routes.RegisterRoutes(r)
+
+	return &Server{engine: r}
+}
+
+func (s *Server) Run() {
+	s.engine.Run()
+}

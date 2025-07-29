@@ -2,6 +2,7 @@ package create
 
 import (
 	"fmt"
+	"goit/cmd/file"
 	"goit/utils"
 	"os"
 	"strings"
@@ -21,7 +22,7 @@ func UpdateRoutesFile(routeName, method, handlerName string, configs utils.Confi
 		return err
 	}
 
-	content, err := utils.ReadFile(configs.RoutesFile)
+	content, err := file.ReadFile(configs.RoutesFile)
 	if err != nil {
 		return fmt.Errorf("❌ Erro ao ler arquivo: %w", err)
 	}

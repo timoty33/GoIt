@@ -145,7 +145,7 @@ func RegisterRoutes(r *gin.Engine) {
 		Port:                "8080",
 		ProjectName:         nomeProjeto,
 
-		HotReload: false,
+		HotReload: true,
 	}
 
 	if err := utils.SaveJsonConfig(configs, nomeProjeto); err != nil {
