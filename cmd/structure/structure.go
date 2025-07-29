@@ -59,8 +59,8 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 			configPaths = utils.ConfigPaths{
 				RoutesFile: "internal/routes/routes.go",
 
-				HandlersFile:   "internal/handlers/handlers.go",
-				HandlersFolder: "internal/handlers",
+				HandlersFile:   "internal/handler/handler.go",
+				HandlersFolder: "internal/handler",
 
 				MiddlewaresFolder: "internal/middlewares",
 				MiddlewaresFile:   "internal/middlewares/middlewares.go",
