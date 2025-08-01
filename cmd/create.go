@@ -200,6 +200,26 @@ func loadDotEnv() (string, error) {
 
 			fmt.Println("Migration criada com sucesso!")
 
+		case "middleware":
+			nameVerify, err := utils.TitleNameVerify(nome)
+			if err != nil {
+				return fmt.Errorf("❌ O nome não pode ser usado: %w", err)
+			}
+
+			if newFile {
+				err := create.CreateMiddlewareNewFile(configsPath, nome, nameVerify)
+				if err != nil {
+					return fmt.Errorf("❌ Erro ao criar middleware: %w", err)
+				}
+			} else {
+				err := create.CreateMiddleware(nameVerify, configsPath)
+				if err != nil {
+					return fmt.Errorf("❌ Erro ao injetar middleware: %w", err)
+				}
+			}
+
+			fmt.Println("Middleware criado com sucesso!")
+
 		}
 
 		return nil

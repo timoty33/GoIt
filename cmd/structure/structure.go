@@ -40,13 +40,15 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 		switch framework {
 		case "Gin":
 			configPaths = utils.ConfigPaths{
+				ServerFile: "internal/server/server.go",
+
 				RoutesFile: "internal/routes/routes.go",
 
 				HandlersFile:   "internal/handler/handler.go",
 				HandlersFolder: "internal/handler",
 
-				MiddlewaresFolder: "internal/middlewares",
-				MiddlewaresFile:   "internal/middlewares/middlewares.go",
+				MiddlewaresFolder: "internal/middleware",
+				MiddlewaresFile:   "internal/middleware/middleware.go",
 
 				DtoFolder: "internal/dto",
 				DtoFile:   "internal/dto/dto.go",

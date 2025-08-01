@@ -12,6 +12,8 @@ type ConfigProject struct {
 }
 
 type ConfigPaths struct {
+	ServerFile string `json:"server_file"`
+
 	RoutesFile string `json:"routes_file"`
 
 	HandlersFile   string `json:"handlers_file"`

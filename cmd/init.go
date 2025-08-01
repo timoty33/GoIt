@@ -175,6 +175,34 @@ Exemplo:
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
 				}
 			}
+		} else {
+			fmt.Println("Você escolheu não instalar as dependências.")
+
+			switch linguagemProjeto {
+			case "Go":
+				if err := setup.GoModInit(projectPath, projectPath); err != nil {
+					return fmt.Errorf("erro ao inicializar o módulo Go: %w", err)
+				}
+
+			case "Python":
+				if err := setup.PythonInit(projectPath); err != nil {
+					return fmt.Errorf("erro ao inicializar o projeto Python (venv): %w", err)
+				}
+
+			case "JavaScript":
+				if err := setup.NodeInit(projectPath); err != nil {
+					return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
+				}
+
+			case "TypeScript":
+				if err := setup.NodeInit(projectPath); err != nil {
+					return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
+				}
+
+				if err = setup.TsInit(projectPath); err != nil {
+					return fmt.Errorf("erro ao inicializar o TypeScript: %w", err)
+				}
+			}
 		}
 
 		fmt.Println("Setup do projeto concluído com sucesso!")
