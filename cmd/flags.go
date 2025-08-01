@@ -10,6 +10,9 @@ var camps []string
 var dtoMode string
 var modelName string
 
+// config
+var configFile bool // true -> Project, false -> Paths
+
 func init() {
 	// goit init
 	rootCmd.AddCommand(initCmd)
@@ -30,4 +33,8 @@ func init() {
 
 	// migration
 	createCmd.Flags().StringVar(&modelName, "model", "", "Define o nome do modelo que será usado na migration.")
+
+	// config
+	rootCmd.AddCommand(configCmd)
+	configCmd.Flags().BoolVar(&configFile, "path", true, "Modifica as configurações do projeto (default) ou dos caminhos/paths (use --path).")
 }

@@ -1,40 +1,21 @@
 package setup
 
 import (
-	"os"
-	"os/exec"
+	"goit/utils"
 )
 
 func GoModInit(nomeProjeto string) error {
-	cmd := exec.Command("go", "mod", "init", nomeProjeto)
-	cmd.Dir = nomeProjeto
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
+	return utils.CmdExecute("go", "mod", "init", nomeProjeto)
 }
 
 func PythonInit(nomeProjeto string) error {
-	cmd := exec.Command("python", "-m", "venv", "venv")
-	cmd.Dir = nomeProjeto
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
+	return utils.CmdExecute("python", "-m", "venv", nomeProjeto)
 }
 
 func NodeInit(nomeProjeto string) error {
-	cmd := exec.Command("npm", "init", "-y")
-	cmd.Dir = nomeProjeto
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
+	return utils.CmdExecute("npm", "init", "-y")
 }
 
 func TsInit(nomeProjeto string) error {
-	// Executa "npx tsc --init"
-	cmd := exec.Command("npx", "tsc", "--init")
-	cmd.Dir = nomeProjeto
-	cmd.Stdout = nil
-	cmd.Stderr = nil
-
-	return cmd.Run()
+	return utils.CmdExecute("npx", "tsc", "--init")
 }

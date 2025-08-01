@@ -25,8 +25,8 @@ func formulario() (string, string, string, string, string) {
 
 	// Pergunta 2: tipo do projeto (escolha única)
 	survey.AskOne(&survey.Select{
-		Message: "Escolha o tipo de projeto:",
-		Options: []string{"Frontend (ainda em desenvolvimento, não use)", "Backend", "FullStack (ainda em desenvolvimento, não use)"},
+		Message: "Escolha o tipo de projeto: Frontend e FullStack ainda em desenvolvimento, sem suporte, não use",
+		Options: []string{"Frontend", "Backend", "FullStack"},
 		Default: "Backend",
 	}, &tipoProjeto)
 
@@ -66,7 +66,7 @@ func formulario() (string, string, string, string, string) {
 
 	// Pergunta 5: DB do projeto
 	survey.AskOne(&survey.Select{
-		Message: "Escolha o banco de dados que será usado:",
+		Message: "Escolha o banco de dados que será usado: MongoDB ainda em desenvolvimento, sem suporte, não use",
 		Options: []string{"SQLite", "PostgreSQL", "MySQL", "MongoDB", "Nenhuma"},
 	}, &dbProjeto)
 
@@ -120,27 +120,59 @@ Exemplo:
 
 		fmt.Println("Iniciando o setup do projeto...")
 
-		switch linguagemProjeto {
-		case "Go":
-			if err := setup.GoModInit(nomeProjeto); err != nil {
-				return fmt.Errorf("erro ao inicializar o módulo Go: %w", err)
-			}
-		case "Python":
-			if err := setup.PythonInit(nomeProjeto); err != nil {
-				return fmt.Errorf("erro ao inicializar o projeto Python (venv): %w", err)
-			}
-		case "JavaScript":
-			if err := setup.NodeInit(nomeProjeto); err != nil {
-				return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
-			}
+		fmt.Print(`Deseja instalar as dependências?
+[1] Sim
+[2] Não
+>>`)
+		var install string
+		fmt.Scanln(&install)
 
-		case "TypeScript":
-			if err := setup.NodeInit(nomeProjeto); err != nil {
-				return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
-			}
+		// Se o usuário escolher instalar as dependências
+		if install == "1" {
+			switch linguagemProjeto {
+			case "Go":
+				if err := setup.GoModInit(nomeProjeto); err != nil {
+					return fmt.Errorf("erro ao inicializar o módulo Go: %w", err)
+				}
 
-			if err = setup.TsInit(nomeProjeto); err != nil {
-				return fmt.Errorf("erro ao inicializar o TypeScript: %w", err)
+				err = setup.InstallDependenciesGo(frameworkProjeto, dbProjeto)
+				if err != nil {
+					return fmt.Errorf("erro ao instalar as dependências: %w", err)
+				}
+
+			case "Python":
+				if err := setup.PythonInit(nomeProjeto); err != nil {
+					return fmt.Errorf("erro ao inicializar o projeto Python (venv): %w", err)
+				}
+
+				err = setup.InstallDependenciesPython(frameworkProjeto, dbProjeto)
+				if err != nil {
+					return fmt.Errorf("erro ao instalar as dependências: %w", err)
+				}
+
+			case "JavaScript":
+				if err := setup.NodeInit(nomeProjeto); err != nil {
+					return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
+				}
+
+				err = setup.InstallDependenciesJS(frameworkProjeto, dbProjeto)
+				if err != nil {
+					return fmt.Errorf("erro ao instalar as dependências: %w", err)
+				}
+
+			case "TypeScript":
+				if err := setup.NodeInit(nomeProjeto); err != nil {
+					return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
+				}
+
+				if err = setup.TsInit(nomeProjeto); err != nil {
+					return fmt.Errorf("erro ao inicializar o TypeScript: %w", err)
+				}
+
+				err = setup.InstallDependenciesTS(frameworkProjeto, dbProjeto)
+				if err != nil {
+					return fmt.Errorf("erro ao instalar as dependências: %w", err)
+				}
 			}
 		}
 
