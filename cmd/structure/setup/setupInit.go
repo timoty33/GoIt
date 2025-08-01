@@ -28,3 +28,13 @@ func NodeInit(nomeProjeto string) error {
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
 }
+
+func TsInit(nomeProjeto string) error {
+	// Executa "npx tsc --init"
+	cmd := exec.Command("npx", "tsc", "--init")
+	cmd.Dir = nomeProjeto
+	cmd.Stdout = nil
+	cmd.Stderr = nil
+
+	return cmd.Run()
+}

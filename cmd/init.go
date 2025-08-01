@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"goit/cmd/structure"
+	"goit/cmd/structure/setup"
 	"goit/utils"
 	"path/filepath"
 
@@ -19,13 +20,13 @@ func formulario() (string, string, string, string, string) {
 
 	// Pergunta 1: nome do projeto
 	survey.AskOne(&survey.Input{
-		Message: "Qual o nome do projeto?",
+		Message: "Qual o nome do projeto: ",
 	}, &nomeProjeto)
 
 	// Pergunta 2: tipo do projeto (escolha única)
 	survey.AskOne(&survey.Select{
 		Message: "Escolha o tipo de projeto:",
-		Options: []string{"Frontend", "Backend", "FullStack"},
+		Options: []string{"Frontend (ainda em desenvolvimento, não use)", "Backend", "FullStack (ainda em desenvolvimento, não use)"},
 		Default: "Backend",
 	}, &tipoProjeto)
 
@@ -33,7 +34,7 @@ func formulario() (string, string, string, string, string) {
 	if tipoProjeto == "FullStack" || tipoProjeto == "Backend" {
 
 		survey.AskOne(&survey.Select{
-			Message: "Escolha a linguagem do backend:",
+			Message: "Escolha a linguagem do backend: (você precisa ter a linguagem instalada no seu computador)",
 			Options: []string{"Go", "JavaScript", "TypeScript", "Python"},
 		}, &linguagemProjeto)
 	}
@@ -118,17 +119,32 @@ Exemplo:
 		fmt.Println("Estrutura do projeto criada com sucesso!")
 
 		fmt.Println("Iniciando o setup do projeto...")
-		if err := structure.Setup(nomeProjeto, linguagemProjeto); err != nil {
-			return fmt.Errorf("erro ao iniciar o setup: %w", err)
-		}
-		fmt.Println("Setup do projeto concluído com sucesso!")
 
-		// 		var depends string
-		// 		fmt.Print(`Você quer instalar as dependências do projeto?
-		// [1] Sim
-		// [2] Não
-		// >> `)
-		// 		fmt.Scanln(&depends)
+		switch linguagemProjeto {
+		case "Go":
+			if err := setup.GoModInit(nomeProjeto); err != nil {
+				return fmt.Errorf("erro ao inicializar o módulo Go: %w", err)
+			}
+		case "Python":
+			if err := setup.PythonInit(nomeProjeto); err != nil {
+				return fmt.Errorf("erro ao inicializar o projeto Python (venv): %w", err)
+			}
+		case "JavaScript":
+			if err := setup.NodeInit(nomeProjeto); err != nil {
+				return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
+			}
+
+		case "TypeScript":
+			if err := setup.NodeInit(nomeProjeto); err != nil {
+				return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
+			}
+
+			if err = setup.TsInit(nomeProjeto); err != nil {
+				return fmt.Errorf("erro ao inicializar o TypeScript: %w", err)
+			}
+		}
+
+		fmt.Println("Setup do projeto concluído com sucesso!")
 
 		return nil
 	},
