@@ -5,7 +5,6 @@ import (
 	"goit/utils"
 	"goit/utils/file"
 	"os"
-	"os/exec"
 	"path/filepath"
 )
 
@@ -13,22 +12,6 @@ const (
 	permPasta   = 0755
 	permArquivo = 0644
 )
-
-func GetModGin(projectPath string) error {
-	cmd := exec.Command("go", "get", "github.com/gin-gonic/gin")
-	cmd.Dir = projectPath
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("falha ao executar 'go get': %w", err)
-	}
-
-	cmd = exec.Command("go", "mod", "tidy")
-	cmd.Dir = projectPath
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
 
 func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (utils.ConfigPaths, error) {
 	var configPaths utils.ConfigPaths

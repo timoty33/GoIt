@@ -1,13 +1,13 @@
 # Tasks
 
-### - Criar função de instalação de dependências da iniciação:
+- [ ] Criar função de instalação de dependências da iniciação:
 
     - [ ] Você passa por um switch case, e já faz o setup e a instalação;
     - [ ] Fazer os logs da instalação mostrando o que foi instalado;
 
-### - Criar função para modificar as configurações:
+- [x] Criar função para modificar as configurações:
 
-    - [ ] Você passa o campo que quer modificar (configs do GOIT) e ele troca o valor;
+    - [x] Você passa o campo que quer modificar (configs do GOIT) e ele troca o valor;
     - [ ] Criar scripts igual ao node js:
 
     ```json

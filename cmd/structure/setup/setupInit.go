@@ -4,18 +4,19 @@ import (
 	"goit/utils"
 )
 
-func GoModInit(nomeProjeto string) error {
-	return utils.CmdExecute("go", "mod", "init", nomeProjeto)
+func GoModInit(projectPath, nomeProjeto string) error {
+	return utils.CmdExecuteInDir(projectPath, "go", "mod", "init", nomeProjeto)
 }
 
-func PythonInit(nomeProjeto string) error {
-	return utils.CmdExecute("python", "-m", "venv", nomeProjeto)
+func PythonInit(projectPath string) error {
+	// Cria um ambiente virtual chamado 'venv' dentro do diretório do projeto.
+	return utils.CmdExecuteInDir(projectPath, "python", "-m", "venv", "venv")
 }
 
-func NodeInit(nomeProjeto string) error {
-	return utils.CmdExecute("npm", "init", "-y")
+func NodeInit(projectPath string) error {
+	return utils.CmdExecuteInDir(projectPath, "npm", "init", "-y")
 }
 
-func TsInit(nomeProjeto string) error {
-	return utils.CmdExecute("npx", "tsc", "--init")
+func TsInit(projectPath string) error {
+	return utils.CmdExecuteInDir(projectPath, "npx", "tsc", "--init")
 }

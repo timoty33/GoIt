@@ -85,7 +85,8 @@ Exemplo:
 
 		nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto := formulario()
 
-		fmt.Println("Iniciando o projeto:", nomeProjeto)
+		projectPath := filepath.Join(nomeProjeto)
+		fmt.Println("Iniciando o projeto:", projectPath)
 
 		switch linguagemProjeto {
 		case "Go":
@@ -97,7 +98,7 @@ Exemplo:
 		}
 
 		configs := utils.ConfigProject{
-			ProjectName:         nomeProjeto,
+			ProjectName:         projectPath,
 			ProgrammingLanguage: linguagemProjeto,
 			Framework:           frameworkProjeto,
 			DataBase:            dbProjeto,
@@ -106,12 +107,12 @@ Exemplo:
 			HotReload:           true,
 		}
 
-		configPaths, err := structure.CreateStructure(nomeProjeto, linguagemProjeto, frameworkProjeto, tipoProjeto)
+		configPaths, err := structure.CreateStructure(projectPath, linguagemProjeto, frameworkProjeto, tipoProjeto)
 		if err != nil {
 			return fmt.Errorf("erro ao criar estrutura: %w", err)
 		}
 
-		err = utils.SaveJsonConfigs(configs, configPaths, filepath.Join(nomeProjeto))
+		err = utils.SaveJsonConfigs(configs, configPaths, projectPath)
 		if err != nil {
 			return fmt.Errorf("erro ao salvar configurações: %w", err)
 		}
@@ -131,45 +132,45 @@ Exemplo:
 		if install == "1" {
 			switch linguagemProjeto {
 			case "Go":
-				if err := setup.GoModInit(nomeProjeto); err != nil {
+				if err := setup.GoModInit(projectPath, projectPath); err != nil {
 					return fmt.Errorf("erro ao inicializar o módulo Go: %w", err)
 				}
 
-				err = setup.InstallDependenciesGo(frameworkProjeto, dbProjeto)
+				err = setup.InstallDependenciesGo(projectPath, frameworkProjeto, dbProjeto)
 				if err != nil {
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
 				}
 
 			case "Python":
-				if err := setup.PythonInit(nomeProjeto); err != nil {
+				if err := setup.PythonInit(projectPath); err != nil {
 					return fmt.Errorf("erro ao inicializar o projeto Python (venv): %w", err)
 				}
 
-				err = setup.InstallDependenciesPython(frameworkProjeto, dbProjeto)
+				err = setup.InstallDependenciesPython(projectPath, frameworkProjeto, dbProjeto)
 				if err != nil {
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
 				}
 
 			case "JavaScript":
-				if err := setup.NodeInit(nomeProjeto); err != nil {
+				if err := setup.NodeInit(projectPath); err != nil {
 					return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
 				}
 
-				err = setup.InstallDependenciesJS(frameworkProjeto, dbProjeto)
+				err = setup.InstallDependenciesJS(projectPath, frameworkProjeto, dbProjeto)
 				if err != nil {
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
 				}
 
 			case "TypeScript":
-				if err := setup.NodeInit(nomeProjeto); err != nil {
+				if err := setup.NodeInit(projectPath); err != nil {
 					return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
 				}
 
-				if err = setup.TsInit(nomeProjeto); err != nil {
+				if err = setup.TsInit(projectPath); err != nil {
 					return fmt.Errorf("erro ao inicializar o TypeScript: %w", err)
 				}
 
-				err = setup.InstallDependenciesTS(frameworkProjeto, dbProjeto)
+				err = setup.InstallDependenciesTS(projectPath, frameworkProjeto, dbProjeto)
 				if err != nil {
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
 				}

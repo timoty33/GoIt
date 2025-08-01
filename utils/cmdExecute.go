@@ -1,18 +1,24 @@
 package utils
 
 import (
-	"fmt"
+	"os"
 	"os/exec"
 )
 
-func CmdExecute(command string, args ...string) error {
-	cmd := exec.Command(command, args...)
-	cmd.Stdout = nil
-	cmd.Stderr = nil
+// CmdExecute executa um comando no diretório de trabalho atual.
+// (Esta é uma suposição de como sua função existente pode ser)
+func CmdExecute(name string, arg ...string) error {
+	cmd := exec.Command(name, arg...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
 
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("erro ao executar comando '%s %v': %w", command, args, err)
-	}
-
-	return nil
+// CmdExecuteInDir executa um comando no diretório especificado.
+func CmdExecuteInDir(dir, name string, arg ...string) error {
+	cmd := exec.Command(name, arg...)
+	cmd.Dir = dir // Define o diretório de trabalho para o comando
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
