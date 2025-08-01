@@ -7,7 +7,7 @@ import (
 )
 
 type Server struct {
-	engine *gin.Engine
+	Engine *gin.Engine
 }
 
 func New() *Server {
@@ -18,9 +18,9 @@ func New() *Server {
 
 	routes.RegisterRoutes(r)
 
-	return &Server{engine: r}
+	return &Server{Engine: r}
 }
 
 func (s *Server) Run() {
-	s.engine.Run()
+	s.Engine.Run()
 }
