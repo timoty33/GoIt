@@ -1,18 +1,8 @@
 # Tasks
 
-- [ ] Criar função de instalação de dependências da iniciação:
+## GPO:
 
-    - [ ] Você passa por um switch case, e já faz o setup e a instalação;
-    - [ ] Fazer os logs da instalação mostrando o que foi instalado;
+> Gop ->> Goit Plugin Organizar
 
-- [x] Criar função para modificar as configurações:
-
-    - [x] Você passa o campo que quer modificar (configs do GOIT) e ele troca o valor;
-    - [ ] Criar scripts igual ao node js:
-
-    ```json
-        "scripts": {
-            "run": "goit run main.go",
-            "build": "goit build main.go",
-        }
-    ```
+- [ ] Criar função de instalação;
+- [ ] Criar estrutura de pasta de um plugin;
