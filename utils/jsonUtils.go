@@ -98,3 +98,34 @@ func LoadJsonConfig() (ConfigProject, ConfigPaths, error) {
 
 	return configProject, configPaths, nil
 }
+
+// ===/===/===/===
+
+func LoadJsonListString(fullpath string) ([]string, error) {
+	var result []string
+
+	file, err := os.Open(fullpath)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao abrir o arquivo: %w", err)
+	}
+	defer file.Close()
+
+	if err := json.NewDecoder(file).Decode(&result); err != nil {
+		return nil, fmt.Errorf("erro ao decodificar o json: %w", err)
+	}
+
+	return result, nil
+}
+
+func SaveJsonListString(list []string, fullpath string) error {
+	file, err := os.Open(fullpath)
+	if err != nil {
+		return fmt.Errorf("erro ao abrir o arquivo: %w", err)
+	}
+	defer file.Close()
+
+	if err := json.NewEncoder(file).Encode(list); err != nil {
+		return fmt.Errorf("erro ao codificar o json: %w", err)
+	}
+	return nil
+}
