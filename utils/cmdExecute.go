@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"encoding/json"
+	"fmt"
 	"os"
 	"os/exec"
 )
@@ -20,5 +22,26 @@ func CmdExecuteInDir(dir, name string, arg ...string) error {
 	cmd.Dir = dir // Define o diretório de trabalho para o comando
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
+
+func CmdExecuteWithJSONInput(name string, jsonInput any, args ...string) error {
+	cmd := exec.Command(name, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		return err
+	}
+
+	// Serializa a struct
+	go func() {
+		defer stdin.Close()
+		if err = json.NewEncoder(stdin).Encode(jsonInput); err != nil {
+			fmt.Fprintf(os.Stderr, "erro ao codificar JSON: %v\n", err)
+		}
+	}()
+
 	return cmd.Run()
 }

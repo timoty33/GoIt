@@ -35,16 +35,6 @@ var InstallGpo = &cobra.Command{
 			return fmt.Errorf("erro ao clonar o plugin: %v", err)
 		}
 
-		err = loadPluginToGPO(namePlugin, filepath.Join(realPathDir, "gpo", "cmd", "commandsFlags.go"))
-		if err != nil {
-			return fmt.Errorf("erro ao carregar o plugin no GPO: %v", err)
-		}
-
-		fmt.Println("🧠 Plugin integrado, iniciando recompilação...")
-
-		recompileGpo()
-
-		// Este ponto nunca será alcançado por causa do os.Exit(0)
 		return nil
 	},
 }
