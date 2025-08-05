@@ -20,25 +20,11 @@ func UpdatePlugin(args []string) error {
 	realPathDir := filepath.Dir(realPath)
 
 	nomePlugin := args[0]
-	var urls []string
-
-	urls, err = utils.LoadJsonListString(filepath.Join(realPathDir, "gpo", "cache.json"))
+	err = utils.CmdExecuteInDir(filepath.Join(realPathDir, "plugins", nomePlugin), "git", "pull")
 	if err != nil {
-		return fmt.Errorf("erro ao carregar a lista de URLs: %w", err)
+		return fmt.Errorf("erro ao atualizar o plugin: %w", err)
 	}
-
-	urlGithubPlugin := utils.SearchPlugin(urls, nomePlugin)
-
-	err = UninstallPlugin(nomePlugin)
-	if err != nil {
-		return fmt.Errorf("erro ao desinstalar o plugin: %s: %w", nomePlugin, err)
-	}
-
-	args = []string{urlGithubPlugin}
-	err = Install(args)
-	if err != nil {
-		return fmt.Errorf("erro ao instalar o plugin: %s: %w", nomePlugin, err)
-	}
+	fmt.Println("Plugin atualizado com sucesso!")
 
 	return nil
 }

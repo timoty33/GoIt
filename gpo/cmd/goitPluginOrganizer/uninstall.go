@@ -23,6 +23,7 @@ func UninstallPlugin(nomePlugin string) error {
 	if err != nil {
 		return fmt.Errorf("erro ao remover o plugin: %v", err)
 	}
+	fmt.Println("Plugin removido com sucesso!")
 
 	return nil
 }

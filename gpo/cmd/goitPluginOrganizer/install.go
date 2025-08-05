@@ -28,18 +28,7 @@ func Install(args []string) error {
 		return fmt.Errorf("erro ao clonar o plugin: %v", err)
 	}
 
-	// salvando url em cache
-	var urls []string
-	urls, err = utils.LoadJsonListString(filepath.Join(realPathDir, "gpo", "cache.json"))
-	if err != nil {
-		return fmt.Errorf("erro ao carregar cache, erro: %w", err)
-	}
-
-	urls = append(urls, urlGithub)
-	err = utils.SaveJsonListString(urls, filepath.Join(realPathDir, "gpo", "cache.json"))
-	if err != nil {
-		return fmt.Errorf("erro ao salvar cache, erro: %w", err)
-	}
+	fmt.Println("Plugin instalado com sucesso!")
 
 	return nil
 }
