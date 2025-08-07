@@ -34,3 +34,8 @@ type ConfigPaths struct {
 	RepositoryFolder string `json:"repository_folder"`
 	DatabaseFolder   string `json:"database_folder"`
 }
+
+type Config struct {
+	Project ConfigProject `json:"project"`
+	Paths   ConfigPaths   `json:"paths"`
+}

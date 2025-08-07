@@ -1,7 +1,9 @@
 package cmd
 
-import "goit/gpo/cmd/goitPluginOrganizer"
-
 func init() {
-	gpo.AddCommand(goitPluginOrganizer.InstallGpo)
+	gpo.AddCommand(installCmd)
+	gpo.AddCommand(uninstallCmd)
+	gpo.AddCommand(updateCmd)
+
+	gpo.AddCommand(runCmd)
 }
