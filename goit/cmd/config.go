@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"goit/cmd/config"
+	"goit/goit/cmd/config"
 
 	"github.com/spf13/cobra"
 )

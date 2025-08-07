@@ -9,8 +9,7 @@ import (
 )
 
 const (
-	permPasta   = 0755
-	permArquivo = 0644
+	permPasta = 0755
 )
 
 func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (utils.ConfigPaths, error) {

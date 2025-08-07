@@ -15,8 +15,8 @@ de arquivos, estrutura inicial, e integração com banco de dados.`,
 }
 
 // Execute chama o rootCmd
-func Execute(version string) {
-	rootCmd.Version = version
+func Execute(versionGoit string) {
+	rootCmd.Version = versionGoit
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

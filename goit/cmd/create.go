@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"goit/cmd/create"
+	"goit/goit/cmd/create"
 	"goit/utils"
 	"goit/utils/file"
 	"os"
