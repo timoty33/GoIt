@@ -1,5 +1,16 @@
 package utils
 
+type LintType struct {
+	Lint         bool   `json:"lint"`
+	LintApply    bool   `json:"lint_apply"`
+	Format       bool   `json:"format"`
+	LintFrontEnd string `json:"frontend_path"` // caminho que será passado no biome
+	LintBackEnd  string `json:"backend_path"`  // caminho que será passado no linter
+}
+type Run struct {
+	Lint LintType `json:"linter"`
+}
+
 type ConfigProject struct {
 	Framework           string `json:"framework"`
 	DataBase            string `json:"database"`
@@ -7,8 +18,10 @@ type ConfigProject struct {
 	Port                string `json:"port"`
 	ProgrammingLanguage string `json:"programming_language"`
 	ProjectName         string `json:"project_name"`
+	ProjectType         string `json:"project_type"`
 
 	HotReload bool `json:"hot_reload"`
+	Run       Run  `json:"run"`
 }
 
 type ConfigPaths struct {

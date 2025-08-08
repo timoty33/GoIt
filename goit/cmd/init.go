@@ -97,14 +97,27 @@ Exemplo:
 			orm = "prisma"
 		}
 
+		lintConfig := utils.LintType{
+			Lint:         true,
+			LintApply:    false,
+			Format:       true,
+			LintFrontEnd: "frontend/",
+			LintBackEnd:  ".",
+		}
+		configRun := utils.Run{
+			Lint: lintConfig,
+		}
+
 		configs := utils.ConfigProject{
 			ProjectName:         projectPath,
+			ProjectType:         tipoProjeto,
 			ProgrammingLanguage: linguagemProjeto,
 			Framework:           frameworkProjeto,
 			DataBase:            dbProjeto,
 			Port:                "8080",
 			Orm:                 orm,
 			HotReload:           true,
+			Run:                 configRun,
 		}
 
 		configPaths, err := structure.CreateStructure(projectPath, linguagemProjeto, frameworkProjeto, tipoProjeto)

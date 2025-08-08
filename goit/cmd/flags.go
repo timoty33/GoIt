@@ -37,4 +37,7 @@ func init() {
 	// config
 	rootCmd.AddCommand(configCmd)
 	configCmd.Flags().BoolVar(&configFile, "path", true, "Modifica as configurações do projeto (default) ou dos caminhos/paths (use --path).")
+
+	// run
+	rootCmd.AddCommand(runCmd)
 }
