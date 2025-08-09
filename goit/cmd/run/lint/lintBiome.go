@@ -4,63 +4,27 @@ import (
 	"fmt"
 	"goit/utils"
 	"goit/utils/file"
-	"sync"
 )
 
 func RunBiome(configProject utils.ConfigProject) error {
-	biomeInstall := IsBiomeAvaible()
+	biomeInstall := isBiomeAvaible()
 	if !biomeInstall {
-		if err := InstallBiomeNpm(); err != nil {
+		if err := installBiomeNpm(); err != nil {
 			return fmt.Errorf("erro ao instalar o biome: %w", err)
 		}
-		if err := BiomeInit(); err != nil {
+		if err := biomeInit(); err != nil {
 			return fmt.Errorf("erro ao inicializar biome: %w", err)
 		}
 
-		// Rodar formatter e linter
 		if configProject.Run.Lint.LintApply {
-			// NÃO roda em paralelo, pois os dois modificam arquivos
-			if configProject.Run.Lint.Format {
-				if err := BiomeFormatter(configProject.Run.Lint.LintFrontEnd); err != nil {
-					return fmt.Errorf("erro ao formatar: %w", err)
-				}
+			if err := biomeRunApply(configProject); err != nil {
+				return fmt.Errorf("erro ao usar o biome: %w", err)
 			}
-			if err := BiomeLintApply(configProject.Run.Lint.LintFrontEnd); err != nil {
-				return fmt.Errorf("erro ao aplicar o linter: %w", err)
-			}
+
 			return nil
 		}
-
-		var wg sync.WaitGroup
-		errChan := make(chan error, 2)
-
-		if configProject.Run.Lint.Format {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				if err := BiomeFormatter(configProject.Run.Lint.LintFrontEnd); err != nil {
-					errChan <- fmt.Errorf("erro ao formatar: %w", err)
-				}
-			}()
-		}
-
-		if configProject.Run.Lint.Lint {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				if err := BiomeLint(configProject.Run.Lint.LintFrontEnd); err != nil {
-					errChan <- fmt.Errorf("erro ao rodar linter: %w", err)
-				}
-			}()
-		}
-
-		wg.Wait()
-		close(errChan)
-
-		for err := range errChan {
-			if err != nil {
-				return err
-			}
+		if err := biomeRun(configProject); err != nil {
+			return fmt.Errorf("erro ao usar o biome: %w", err)
 		}
 
 		return nil
@@ -68,55 +32,20 @@ func RunBiome(configProject utils.ConfigProject) error {
 
 	if !file.FileExists("biome.json") {
 		fmt.Println("⚙️ biome.json não encontrado, inicializando...")
-		if err := BiomeInit(); err != nil {
+		if err := biomeInit(); err != nil {
 			return fmt.Errorf("erro ao inicializar biome: %w", err)
 		}
 	}
 
-	// Rodar formatter e linter
 	if configProject.Run.Lint.LintApply {
-		// NÃO roda em paralelo, pois os dois modificam arquivos
-		if configProject.Run.Lint.Format {
-			if err := BiomeFormatter(configProject.Run.Lint.LintFrontEnd); err != nil {
-				return fmt.Errorf("erro ao formatar: %w", err)
-			}
+		if err := biomeRunApply(configProject); err != nil {
+			return fmt.Errorf("erro ao usar o biome: %w", err)
 		}
-		if err := BiomeLintApply(configProject.Run.Lint.LintFrontEnd); err != nil {
-			return fmt.Errorf("erro ao aplicar o linter: %w", err)
-		}
+
 		return nil
 	}
-
-	var wg sync.WaitGroup
-	errChan := make(chan error, 2)
-
-	if configProject.Run.Lint.Format {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			if err := BiomeFormatter(configProject.Run.Lint.LintFrontEnd); err != nil {
-				errChan <- fmt.Errorf("erro ao formatar: %w", err)
-			}
-		}()
-	}
-
-	if configProject.Run.Lint.Lint {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			if err := BiomeLint(configProject.Run.Lint.LintFrontEnd); err != nil {
-				errChan <- fmt.Errorf("erro ao rodar linter: %w", err)
-			}
-		}()
-	}
-
-	wg.Wait()
-	close(errChan)
-
-	for err := range errChan {
-		if err != nil {
-			return err
-		}
+	if err := biomeRun(configProject); err != nil {
+		return fmt.Errorf("erro ao usar o biome: %w", err)
 	}
 
 	return nil

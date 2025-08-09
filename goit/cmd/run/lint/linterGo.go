@@ -7,21 +7,21 @@ import (
 )
 
 func RunStaticFmt(configProject utils.ConfigProject) error {
-	if !IsStaticCheckAvaible() {
-		if err := InstallStaticCheck(); err != nil {
+	if !isStaticCheckAvaible() {
+		if err := installStaticCheck(); err != nil {
 			return fmt.Errorf("erro ao instalar o static: %w", err)
 		}
 	}
 
 	var wg sync.WaitGroup
-	errChan := make(chan error, 2)
+	msgChan := make(chan error, 2)
 
 	if configProject.Run.Lint.Format {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			if err := GoFmt(configProject.Run.Lint.LintBackEnd); err != nil {
-				errChan <- fmt.Errorf("erro ao formatar: %w", err)
+			if err := goFmt(configProject.Run.Lint.LintBackEnd); err != nil {
+				msgChan <- fmt.Errorf("erro ao formatar: %v", err)
 			}
 		}()
 	}
@@ -30,18 +30,18 @@ func RunStaticFmt(configProject utils.ConfigProject) error {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			if err := StaticLint(configProject.Run.Lint.LintBackEnd); err != nil {
-				errChan <- fmt.Errorf("erro ao rodar linter: %w", err)
+			if err := staticLint(configProject.Run.Lint.LintBackEnd); err != nil {
+				msgChan <- fmt.Errorf("erro ao rodar linter: %v", err)
 			}
 		}()
 	}
 
 	wg.Wait()
-	close(errChan)
+	close(msgChan)
 
-	for err := range errChan {
-		if err != nil {
-			return err
+	for msg := range msgChan {
+		if msg != nil {
+			return msg
 		}
 	}
 

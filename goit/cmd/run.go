@@ -25,10 +25,20 @@ var runCmd = &cobra.Command{
 		case "linter":
 
 			// passa o linter no front
-			if configProject.ProjectType == "fullstack" || configProject.ProjectType == "frontend" {
+			if configProject.ProjectType == "FullStack" || configProject.ProjectType == "Frontend" {
 				err := lint.RunBiome(configProject)
 				if err != nil {
 					return fmt.Errorf("erro ao usar o biome: %w", err)
+				}
+				fmt.Println("Biome feito com sucesso!")
+			}
+
+			if configProject.ProjectType == "Backend" || configProject.ProjectType == "FullStack" {
+				switch configProject.ProgrammingLanguage {
+				case "Go":
+					if err := lint.RunStaticFmt(configProject); err != nil {
+						return fmt.Errorf("erro ao rodar linter para go: %w", err)
+					}
 				}
 			}
 		}

@@ -6,49 +6,45 @@ import (
 )
 
 // ================ Biome Setup ================
-func IsBiomeAvaible() bool {
+func isBiomeAvaible() bool {
 	cmd := exec.Command("npx", "biome", "--version")
 	err := cmd.Run()
 	return err == nil
 }
 
-func InstallBiomeNpm() error {
-	return utils.CmdExecute("npm", "install", "--save-dev", "biome")
+func installBiomeNpm() error {
+	return utils.CmdExecute("npm", "i", "-D", "-E", "@biomejs/biome")
 }
 
-func BiomeInit() error {
-	return utils.CmdExecute("npx", "biome", "init")
+func biomeInit() error {
+	return utils.CmdExecute("npx", "@biomejs/biome", "init")
 }
 
 // ======== Biome Linter and Formatter =========
-func BiomeLint(lintFrontend string) error {
-	return utils.CmdExecute("npx", "biome", "lint", lintFrontend)
+func biomeRunApply(configProject utils.ConfigProject) error {
+	return utils.CmdExecute("npx", "@biomejs/biome", "check", "--write", configProject.Run.Lint.LintFrontEnd)
 }
 
-func BiomeLintApply(lintFrontend string) error {
-	return utils.CmdExecute("npx", "biome", "lint", lintFrontend, "--apply")
-}
-
-func BiomeFormatter(lintFrontend string) error {
-	return utils.CmdExecute("npx", "biome", "format", lintFrontend)
+func biomeRun(configProject utils.ConfigProject) error {
+	return utils.CmdExecute("npx", "@biomejs/biome", "check", configProject.Run.Lint.LintFrontEnd)
 }
 
 // =========== Static Check Setup ==============
-func IsStaticCheckAvaible() bool {
+func isStaticCheckAvaible() bool {
 	cmd := exec.Command("staticcheck", "--version")
 	err := cmd.Run()
 	return err == nil
 }
 
-func InstallStaticCheck() error {
+func installStaticCheck() error {
 	return utils.CmdExecute("go", "install", "honnef.co/go/tools/cmd/staticcheck@latest")
 }
 
 // ======= Static Linter and Formatter =========
-func StaticLint(path string) error {
+func staticLint(path string) error {
 	return utils.CmdExecute("staticcheck", path)
 }
 
-func GoFmt(path string) error {
+func goFmt(path string) error {
 	return utils.CmdExecute("go", "fmt", path)
 }
