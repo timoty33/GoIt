@@ -14,6 +14,7 @@ var runCmd = &cobra.Command{
 	Long:  "Inicia um super projeto criado com GoIt, e pode ter diferentes modos, como 'dev', 'test' ou 'linter'",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
+		
 		// carregando as configs
 		configProject, _, err := utils.LoadJsonConfig()
 		if err != nil {
