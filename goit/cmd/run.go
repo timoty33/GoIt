@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"goit/goit/cmd/run/dev"
 	"goit/goit/cmd/run/lint"
 	"goit/utils"
 
@@ -39,6 +40,28 @@ var runCmd = &cobra.Command{
 					if err := lint.RunStaticFmt(configProject); err != nil {
 						return fmt.Errorf("erro ao rodar linter para go: %w", err)
 					}
+				}
+			}
+
+		case "dev":
+
+			switch configProject.ProjectType {
+			case "FullStack":
+				err := dev.RunDevFullstack(configProject)
+				if err != nil {
+					return fmt.Errorf("erro ao rodar em dev: %w", err)
+				}
+
+			case "BackEnd":
+				err := dev.RunDevBackend(configProject)
+				if err != nil {
+					return fmt.Errorf("erro ao rodar em dev: %w", err)
+				}
+
+			case "FrontEnd":
+				err := dev.RunDevFrontend(configProject)
+				if err != nil {
+					return fmt.Errorf("erro ao rodar em dev: %w", err)
 				}
 			}
 		}

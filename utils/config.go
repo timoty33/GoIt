@@ -7,7 +7,15 @@ type LintType struct {
 	LintFrontEnd string `json:"frontend_path"` // caminho que será passado no biome
 	LintBackEnd  string `json:"backend_path"`  // caminho que será passado no linter
 }
+type Dev struct {
+	HotReloadBackend    bool     `json:"hot_reload"`
+	HotReloadFrontend   bool     `json:"hot_reload_frontend"`
+	InitCommandBackend  string   `json:"init_command_backend"`
+	InitCommandFrontend string   `json:"init_command_frontend"`
+	Ignore              []string `json:"ignore_paths"`
+}
 type Run struct {
+	Dev  Dev      `json:"dev"`
 	Lint LintType `json:"linter"`
 }
 
@@ -20,8 +28,7 @@ type ConfigProject struct {
 	ProjectName         string `json:"project_name"`
 	ProjectType         string `json:"project_type"`
 
-	HotReload bool `json:"hot_reload"`
-	Run       Run  `json:"run"`
+	Run Run `json:"run"`
 }
 
 type ConfigPaths struct {
