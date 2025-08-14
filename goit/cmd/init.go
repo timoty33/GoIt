@@ -32,7 +32,6 @@ func formulario() (string, string, string, string, string) {
 
 	// Pergunta 3: linguagens do projeto
 	if tipoProjeto == "FullStack" || tipoProjeto == "Backend" {
-
 		survey.AskOne(&survey.Select{
 			Message: "Escolha a linguagem do backend: (você precisa ter a linguagem instalada no seu computador)",
 			Options: []string{"Go", "JavaScript", "TypeScript", "Python"},
@@ -88,13 +87,20 @@ Exemplo:
 		projectPath := filepath.Join(nomeProjeto)
 		fmt.Println("Iniciando o projeto:", projectPath)
 
+		var initCommandBackend string
 		switch linguagemProjeto {
 		case "Go":
 			orm = "gorm"
+			initCommandBackend = "go run cmd/main.go"
 		case "Python":
 			orm = "sqlalchemy"
-		case "JavaScript", "TypeScript":
+			initCommandBackend = "python app.py"
+		case "JavaScript":
 			orm = "prisma"
+			initCommandBackend = "node src/index.js"
+		case "TypeScript":
+			orm = "prisma"
+			initCommandBackend = "npx ts-node src/index.ts"
 		}
 
 		lintConfig := utils.LintType{
@@ -104,8 +110,13 @@ Exemplo:
 			LintFrontEnd: "frontend/",
 			LintBackEnd:  ".",
 		}
+		devConfig := utils.Dev{
+			Ignore:                         []string{"*.md", "*.txt", "./bin/**/*"},
+			InitCommandBackend: initCommandBackend,
+		}
 		configRun := utils.Run{
 			Lint: lintConfig,
+			Dev:   devConfig,
 		}
 
 		configs := utils.ConfigProject{
@@ -116,7 +127,6 @@ Exemplo:
 			DataBase:            dbProjeto,
 			Port:                "8080",
 			Orm:                 orm,
-			HotReload:           true,
 			Run:                 configRun,
 		}
 

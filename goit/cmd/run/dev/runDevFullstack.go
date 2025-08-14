@@ -1,9 +1,18 @@
 package dev
 
-import "goit/utils"
+import (
+	"fmt"
+	"goit/utils"
+)
 
 func RunDevFullstack(configProject utils.ConfigProject) error {
-	if configProject.Run.Dev.HotReloadBackend {
+	fmt.Println("Iniciando aplicação em modo de dev!")
+
+	if configProject.Run.Dev.HotReloadBackend.Active {
+		go RunDevBackend(configProject)
+	}
+	if configProject.Run.Dev.HotReloadFrontend.Active {
+		go RunDevFrontend(configProject)
 	}
 
 	return nil

@@ -7,7 +7,10 @@ require (
 	github.com/spf13/cobra v1.9.1
 )
 
-require github.com/bmatcuk/doublestar/v4 v4.9.1 // indirect
+require (
+	github.com/bmatcuk/doublestar/v4 v4.9.1 // direct
+	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // direct
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.9.0 // direct
