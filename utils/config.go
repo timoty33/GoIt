@@ -7,19 +7,20 @@ type LintType struct {
 	LintFrontEnd string `json:"frontend_path"` // caminho que será passado no biome
 	LintBackEnd  string `json:"backend_path"`  // caminho que será passado no linter
 }
-type hotreloadBackend struct {
+type HotreloadBackend struct {
 	Active     bool   `json:"active"`
 	ListenPath string `json:"listen_path"`
 }
-type hotreloadFrontend struct {
+type HotreloadFrontend struct {
 	Active     bool   `json:"active"`
 	ListenPath string `json:"listen_path"`
 }
 type Dev struct {
-	HotReloadBackend   hotreloadBackend  `json:"hot_reload_backend"`
-	HotReloadFrontend  hotreloadFrontend `json:"hot_reload_frontend"`
+	HotReloadBackend   HotreloadBackend  `json:"hot_reload_backend"`
+	HotReloadFrontend  HotreloadFrontend `json:"hot_reload_frontend"`
 	InitCommandBackend string            `json:"init_command_backend"`
 	Ignore             []string          `json:"ignore_paths"`
+	Linter             bool              `json:"run_linter"`
 }
 type Run struct {
 	Dev  Dev      `json:"dev"`

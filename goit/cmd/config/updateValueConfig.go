@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-
 	"goit/utils"
 )
 
@@ -28,8 +27,6 @@ func UpdateConfigKey(configFile bool, key, value string) error {
 			configProj.ProgrammingLanguage = value
 		case "name":
 			configProj.ProjectName = value
-		case "reload":
-			configProj.HotReload = value == "true" // Converte string para bool
 		default:
 			return fmt.Errorf("chave de configuração desconhecida: %s", key)
 		}

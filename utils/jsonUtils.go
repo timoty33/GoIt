@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	ConfigProjectFileName = ".goit.config.json"
-	ConfigPathsFileName   = ".goit.config.paths.json"
+	ConfigProjectFileName = "goit.config.json"
+	ConfigPathsFileName   = "goit.config.paths.json"
 )
 
 func SaveJsonConfigProject(configProject ConfigProject, projectPath string) error {

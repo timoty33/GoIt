@@ -43,6 +43,8 @@ var runCmd = &cobra.Command{
 				}
 			}
 
+			return nil
+
 		case "dev":
 
 			switch configProject.ProjectType {
@@ -52,18 +54,20 @@ var runCmd = &cobra.Command{
 					return fmt.Errorf("erro ao rodar em dev: %w", err)
 				}
 
-			case "BackEnd":
+			case "Backend":
 				err := dev.RunDevBackend(configProject)
 				if err != nil {
 					return fmt.Errorf("erro ao rodar em dev: %w", err)
 				}
 
-			case "FrontEnd":
+			case "Frontend":
 				err := dev.RunDevFrontend(configProject)
 				if err != nil {
 					return fmt.Errorf("erro ao rodar em dev: %w", err)
 				}
 			}
+
+			return nil
 		}
 
 		return nil

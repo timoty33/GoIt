@@ -14,7 +14,7 @@ import (
 
 var createCmd = &cobra.Command{
 	Use:   "create [tipo] [nome]",
-	Short: "Cria uma parte de código, ou um arquivo já iniciado, e acrescenta em outros arquivos de acordo com o .goit.config.json",
+	Short: "Cria uma parte de código, ou um arquivo já iniciado, e acrescenta em outros arquivos de acordo com o goit.config.json",
 	Args:  cobra.ExactArgs(2), // tipo de criação e nome
 	RunE: func(cmd *cobra.Command, args []string) error {
 		tipo := args[0]

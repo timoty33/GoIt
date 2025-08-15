@@ -91,7 +91,7 @@ Exemplo:
 		switch linguagemProjeto {
 		case "Go":
 			orm = "gorm"
-			initCommandBackend = "go run cmd/main.go"
+			initCommandBackend = "go run main.go"
 		case "Python":
 			orm = "sqlalchemy"
 			initCommandBackend = "python app.py"
@@ -110,13 +110,25 @@ Exemplo:
 			LintFrontEnd: "frontend/",
 			LintBackEnd:  ".",
 		}
+		// structs for config
+		hotBack := utils.HotreloadBackend{
+			Active:     true,
+			ListenPath: ".",
+		}
+		hotFront := utils.HotreloadFrontend{
+			Active:     true,
+			ListenPath: "./frontend",
+		}
 		devConfig := utils.Dev{
-			Ignore:                         []string{"*.md", "*.txt", "./bin/**/*"},
+			HotReloadBackend:   hotBack,
+			HotReloadFrontend:  hotFront,
+			Linter:             false,
+			Ignore:             []string{"md", "*.txt", "./bin/**/*"},
 			InitCommandBackend: initCommandBackend,
 		}
 		configRun := utils.Run{
 			Lint: lintConfig,
-			Dev:   devConfig,
+			Dev:  devConfig,
 		}
 
 		configs := utils.ConfigProject{
@@ -147,7 +159,7 @@ Exemplo:
 		fmt.Print(`Deseja instalar as dependências?
 [1] Sim
 [2] Não
->>`)
+>> `)
 		var install string
 		fmt.Scanln(&install)
 

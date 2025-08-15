@@ -9,11 +9,11 @@ require (
 
 require (
 	github.com/bmatcuk/doublestar/v4 v4.9.1 // direct
+	github.com/fsnotify/fsnotify v1.9.0 // direct
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // direct
 )
 
 require (
-	github.com/fsnotify/fsnotify v1.9.0 // direct
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/mattn/go-colorable v0.1.2 // indirect
