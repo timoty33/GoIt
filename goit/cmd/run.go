@@ -27,11 +27,16 @@ var runCmd = &cobra.Command{
 
 			// passa o linter no front
 			if configProject.ProjectType == "FullStack" || configProject.ProjectType == "Frontend" {
-				err := lint.RunBiome(configProject)
-				if err != nil {
-					return fmt.Errorf("erro ao usar o biome: %w", err)
+				if !runOnlyBackend { // if not run only in backend
+					err := lint.RunBiome(configProject)
+					if err != nil {
+						return fmt.Errorf("erro ao usar o biome: %w", err)
+					}
+					fmt.Println("Biome feito com sucesso!")
+					if runOnlyFrontend {
+						return nil
+					}
 				}
-				fmt.Println("Biome feito com sucesso!")
 			}
 
 			if configProject.ProjectType == "Backend" || configProject.ProjectType == "FullStack" {
@@ -49,6 +54,19 @@ var runCmd = &cobra.Command{
 
 			switch configProject.ProjectType {
 			case "FullStack":
+				if runOnlyFrontend {
+					err := dev.RunDevFrontend(configProject)
+					if err != nil {
+						return fmt.Errorf("erro ao rodar em dev: %w", err)
+					}
+					return nil
+				} else if runOnlyBackend {
+					err := dev.RunDevBackend(configProject)
+					if err != nil {
+						return fmt.Errorf("erro ao rodar em dev: %w", err)
+					}
+					return nil
+				}
 				err := dev.RunDevFullstack(configProject)
 				if err != nil {
 					return fmt.Errorf("erro ao rodar em dev: %w", err)

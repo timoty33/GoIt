@@ -10,6 +10,9 @@ var camps []string
 var dtoMode string
 var modelName string
 
+var runOnlyBackend bool
+var runOnlyFrontend bool
+
 // config
 var configFile bool // true -> Project, false -> Paths
 
@@ -40,4 +43,6 @@ func init() {
 
 	// run
 	rootCmd.AddCommand(runCmd)
+	runCmd.Flags().BoolVarP(&runOnlyBackend, "backend", "b", false, "Roda apenas o backend.")
+	runCmd.Flags().BoolVarP(&runOnlyFrontend, "frontend", "f", false, "Roda apenas o frontend.")
 }
