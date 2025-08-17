@@ -1,18 +1,25 @@
 package dev
 
 import (
-	"fmt"
 	"goit/utils"
 )
 
-func RunDevFullstack(configProject utils.ConfigProject) error {
-	fmt.Println("Iniciando aplicação em modo de dev!")
+func RunDevFullstack(config utils.ConfigProject) error {
+	errCh := make(chan error, 2)
 
-	if configProject.Run.Dev.HotReloadBackend.Active {
-		go RunDevBackend(configProject)
-	}
-	if configProject.Run.Dev.HotReloadFrontend.Active {
-		go RunDevFrontend(configProject)
+	go func() {
+		errCh <- RunDevFrontend(config)
+	}()
+
+	go func() {
+		errCh <- RunDevBackend(config)
+	}()
+
+	// Espera ambos terminarem ou retornarem erro
+	for i := 0; i < 2; i++ {
+		if err := <-errCh; err != nil {
+			return err
+		}
 	}
 
 	return nil

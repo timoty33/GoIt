@@ -20,7 +20,6 @@ type Dev struct {
 	HotReloadFrontend  HotreloadFrontend `json:"hot_reload_frontend"`
 	InitCommandBackend string            `json:"init_command_backend"`
 	Ignore             []string          `json:"ignore_paths"`
-	Linter             bool              `json:"run_linter"`
 }
 type Run struct {
 	Dev  Dev      `json:"dev"`

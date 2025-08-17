@@ -122,7 +122,6 @@ Exemplo:
 		devConfig := utils.Dev{
 			HotReloadBackend:   hotBack,
 			HotReloadFrontend:  hotFront,
-			Linter:             false,
 			Ignore:             []string{"md", "*.txt", "./bin/**/*"},
 			InitCommandBackend: initCommandBackend,
 		}

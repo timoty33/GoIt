@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"goit/goit/cmd/run/dev/watchexec"
 	"goit/utils"
+	"time"
 )
 
 func RunDevBackend(configProject utils.ConfigProject) error {
 	fmt.Println("Iniciando BackEnd em modo dev!")
+	now := time.Now()
 
 	// se o watchexec estiver instalado, daí criamos
 	// o comando e executamos ele
@@ -22,7 +24,7 @@ func RunDevBackend(configProject utils.ConfigProject) error {
 
 		// executa ele
 		fmt.Println(commandWatch)
-		utils.CmdExecute(commandWatch[0], commandWatch[1:]...)
+		utils.CmdExecuteLog(now, "[BACKEND]", commandWatch[0], commandWatch[1:]...)
 	}
 
 	return nil
