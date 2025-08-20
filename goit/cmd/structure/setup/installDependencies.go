@@ -56,12 +56,6 @@ func InstallDependenciesGo(projectPath, framework, db string) error {
 	return nil
 }
 
-func InstallDependenciesPython(projectPath, framework, db string) error {
-	// lógica
-
-	return nil
-}
-
 func InstallDependenciesJS(projectPath, framework, db string) error {
 	// Aqui você pode adicionar a lógica para instalar dependências do JavaScript
 	// Exemplo: npm install express mongoose

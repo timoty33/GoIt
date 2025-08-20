@@ -1,20 +1,22 @@
 package cmd
 
 // create
-var newFile bool
-var method string
-var routeName string
-var handlerName string
-var handlerParams []string
-var camps []string
-var dtoMode string
-var modelName string
+var (
+	newFile       bool
+	method        string
+	routeName     string
+	handlerName   string
+	handlerParams []string
+	camps         []string
+	dtoMode       string
+	modelName     string
+)
 
-var runOnlyBackend bool
-var runOnlyFrontend bool
-
-// config
-var configFile bool // true -> Project, false -> Paths
+// run
+var (
+	runOnlyBackend  bool
+	runOnlyFrontend bool
+)
 
 func init() {
 	// goit init
@@ -36,10 +38,6 @@ func init() {
 
 	// migration
 	createCmd.Flags().StringVar(&modelName, "model", "", "Define o nome do modelo que será usado na migration.")
-
-	// config
-	rootCmd.AddCommand(configCmd)
-	configCmd.Flags().BoolVar(&configFile, "path", true, "Modifica as configurações do projeto (default) ou dos caminhos/paths (use --path).")
 
 	// run
 	rootCmd.AddCommand(runCmd)

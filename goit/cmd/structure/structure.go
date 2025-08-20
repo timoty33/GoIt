@@ -70,16 +70,6 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 
 		}
 
-	case "Python":
-		switch framework {
-		case "FastApi":
-
-		case "Django":
-
-		case "Flask":
-
-		}
-
 	case "JavaScript":
 		switch framework {
 		case "Express":

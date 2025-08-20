@@ -34,7 +34,7 @@ func formulario() (string, string, string, string, string) {
 	if tipoProjeto == "FullStack" || tipoProjeto == "Backend" {
 		survey.AskOne(&survey.Select{
 			Message: "Escolha a linguagem do backend: (você precisa ter a linguagem instalada no seu computador)",
-			Options: []string{"Go", "JavaScript", "TypeScript", "Python"},
+			Options: []string{"Go", "JavaScript", "TypeScript"},
 		}, &linguagemProjeto)
 	}
 
@@ -45,13 +45,6 @@ func formulario() (string, string, string, string, string) {
 		survey.AskOne(&survey.Select{
 			Message: "Escolha o framework que será usado:",
 			Options: []string{"Gin", "Echo", "Fiber"},
-		}, &frameworkProjeto)
-
-	case "Python":
-
-		survey.AskOne(&survey.Select{
-			Message: "Escolha o framework que será usado:",
-			Options: []string{"FastApi", "Django", "Flask"},
 		}, &frameworkProjeto)
 
 	case "JavaScript", "TypeScript":
@@ -92,9 +85,6 @@ Exemplo:
 		case "Go":
 			orm = "gorm"
 			initCommandBackend = "go run main.go"
-		case "Python":
-			orm = "sqlalchemy"
-			initCommandBackend = "python app.py"
 		case "JavaScript":
 			orm = "prisma"
 			initCommandBackend = "node src/index.js"
@@ -175,16 +165,6 @@ Exemplo:
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
 				}
 
-			case "Python":
-				if err := setup.PythonInit(projectPath); err != nil {
-					return fmt.Errorf("erro ao inicializar o projeto Python (venv): %w", err)
-				}
-
-				err = setup.InstallDependenciesPython(projectPath, frameworkProjeto, dbProjeto)
-				if err != nil {
-					return fmt.Errorf("erro ao instalar as dependências: %w", err)
-				}
-
 			case "JavaScript":
 				if err := setup.NodeInit(projectPath); err != nil {
 					return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
@@ -216,11 +196,6 @@ Exemplo:
 			case "Go":
 				if err := setup.GoModInit(projectPath, projectPath); err != nil {
 					return fmt.Errorf("erro ao inicializar o módulo Go: %w", err)
-				}
-
-			case "Python":
-				if err := setup.PythonInit(projectPath); err != nil {
-					return fmt.Errorf("erro ao inicializar o projeto Python (venv): %w", err)
 				}
 
 			case "JavaScript":

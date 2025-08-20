@@ -8,6 +8,11 @@ require (
 )
 
 require (
+	github.com/mattn/go-pointer v0.0.1 // indirect
+	github.com/tree-sitter/go-tree-sitter v0.24.0 // indirect
+)
+
+require (
 	github.com/bmatcuk/doublestar/v4 v4.9.1 // direct
 	github.com/fsnotify/fsnotify v1.9.0 // direct
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // direct
