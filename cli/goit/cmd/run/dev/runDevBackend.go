@@ -2,7 +2,7 @@ package dev
 
 import (
 	"fmt"
-	"goit/goit/cmd/run/dev/watchexec"
+	"goit/cli/goit/cmd/run/dev/watchexec"
 	"goit/utils"
 	"time"
 )

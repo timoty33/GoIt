@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"goit/goit/cmd/structure"
-	"goit/goit/cmd/structure/setup"
+	"goit/cli/goit/cmd/structure"
+	"goit/cli/goit/cmd/structure/setup"
 	"goit/utils"
 	"path/filepath"
 

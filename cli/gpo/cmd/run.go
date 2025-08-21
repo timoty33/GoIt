@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"goit/gpo/cmd/goitPluginOrganizer"
+	"goit/cli/gpo/cmd/goitPluginOrganizer"
 	"goit/utils"
 
 	"github.com/spf13/cobra"

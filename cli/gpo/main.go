@@ -1,7 +1,7 @@
 package main
 
 import (
-	"goit/gpo/cmd"
+	"goit/cli/gpo/cmd"
 )
 
 func main() {

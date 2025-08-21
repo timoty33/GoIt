@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"goit/goit/cmd/run/dev"
-	"goit/goit/cmd/run/lint"
+	"goit/cli/goit/cmd/run/dev"
+	"goit/cli/goit/cmd/run/lint"
 	"goit/utils"
 
 	"github.com/spf13/cobra"

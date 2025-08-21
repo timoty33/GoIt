@@ -1,7 +1,7 @@
 package main
 
 import (
-	"goit/goit/cmd"
+	"goit/cli/goit/cmd"
 )
 
 func main() {
