@@ -61,30 +61,39 @@ var createCmd = &cobra.Command{
 
 		case "env":
 			content := `package config
+
 import (
+	"fmt"
 	"os"
 	"path/filepath"
-	"fmt"
+
 	"github.com/joho/godotenv"
 )
-	
-func loadDotEnv() (string, error) {
+
+func LoadDotEnv() (error) {
 	currentDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		return "", fmt.Errorf("erro ao obter diretório absoluto: %w", err)
+		return fmt.Errorf("erro ao obter diretório absoluto: %w", err)
 	}
 	
 	envFilePath := filepath.Join(currentDir, "..", "env")
 
 	err = godotenv.Load(envFilePath)
 	if err != nil {
-		return "", fmt.Errorf("erro ao carregar env: %w", err)
+		return fmt.Errorf("erro ao carregar env: %w", err)
 	}
-
-	apiKey := os.Getenv("API_KEY")
 	
-	return apiKey, nil
-}`
+	return nil
+}
+
+// função helper para pegar env vars
+func GetEnv(key, fallback string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return fallback
+}
+`
 
 			env, err := os.Create(".env")
 			if err != nil {

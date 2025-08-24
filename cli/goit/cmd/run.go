@@ -86,6 +86,9 @@ var runCmd = &cobra.Command{
 			}
 
 			return nil
+
+		case "build":
+
 		}
 
 		return nil
