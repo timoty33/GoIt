@@ -11,12 +11,34 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func formulario() (string, string, string, string, string) {
+func formulario() (string, string, string, string, string, bool, string) {
 	var nomeProjeto string
 	var tipoProjeto string
 	var linguagemProjeto string
 	var frameworkProjeto string
 	var dbProjeto string
+	var otherTemplate string
+	var templatePath string
+
+	// Pergunta 0: template alternativo
+	survey.AskOne(&survey.Select{
+		Message: "Gostaria de usar um template próprio: ",
+		Options: []string{"Sim", "Não"},
+		Default: "Não",
+	}, &otherTemplate)
+
+	if otherTemplate == "Sim" {
+		survey.AskOne(&survey.Input{
+			Message: "Qual é o caminho absoluto para o template [caminho/para/o/meu/template/arquivos.tmpl]: ",
+		}, &templatePath)
+
+		// Pergunta 1: nome do projeto
+		survey.AskOne(&survey.Input{
+			Message: "Qual o nome do projeto: ",
+		}, &nomeProjeto)
+
+		return nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto, true, templatePath
+	}
 
 	// Pergunta 1: nome do projeto
 	survey.AskOne(&survey.Input{
@@ -62,7 +84,7 @@ func formulario() (string, string, string, string, string) {
 		Options: []string{"SQLite", "PostgreSQL", "MySQL", "MongoDB", "Nenhuma"},
 	}, &dbProjeto)
 
-	return nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto
+	return nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto, false, ""
 }
 
 var initCmd = &cobra.Command{
@@ -75,7 +97,7 @@ Exemplo:
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var orm string
 
-		nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto := formulario()
+		nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto, otherTemplate, templatePath := formulario()
 
 		projectPath := filepath.Join(nomeProjeto)
 		fmt.Println("Iniciando o projeto:", projectPath)
@@ -131,6 +153,14 @@ Exemplo:
 			Run:                 configRun,
 		}
 
+		// utilizando outro template
+		if otherTemplate {
+			err := structure.CreateStructureOther(templatePath, projectPath)
+			if err != nil {
+				return fmt.Errorf("erro ao carregar template: %w", err)
+			}
+		}
+
 		configPaths, err := structure.CreateStructure(projectPath, linguagemProjeto, frameworkProjeto, tipoProjeto)
 		if err != nil {
 			return fmt.Errorf("erro ao criar estrutura: %w", err)
@@ -165,6 +195,11 @@ Exemplo:
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
 				}
 
+				if tipoProjeto == "Frontend" || tipoProjeto == "FullStack" {
+					// instala dependencias do front
+					utils.CmdExecuteInDir(filepath.Join(nomeProjeto, "frontend"), "npm", "i")
+				}
+
 			case "JavaScript":
 				if err := setup.NodeInit(projectPath); err != nil {
 					return fmt.Errorf("erro ao inicializar o projeto Node.js: %w", err)
@@ -173,6 +208,10 @@ Exemplo:
 				err = setup.InstallDependenciesJS(projectPath, frameworkProjeto, dbProjeto)
 				if err != nil {
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
+				}
+				if tipoProjeto == "Frontend" || tipoProjeto == "FullStack" {
+					// instala dependencias do front
+					utils.CmdExecuteInDir(filepath.Join(nomeProjeto, "frontend"), "npm", "i")
 				}
 
 			case "TypeScript":
@@ -187,6 +226,11 @@ Exemplo:
 				err = setup.InstallDependenciesTS(projectPath, frameworkProjeto, dbProjeto)
 				if err != nil {
 					return fmt.Errorf("erro ao instalar as dependências: %w", err)
+				}
+
+				if tipoProjeto == "Frontend" || tipoProjeto == "FullStack" {
+					// instala dependencias do front
+					utils.CmdExecuteInDir(filepath.Join(nomeProjeto, "frontend"), "npm", "i")
 				}
 			}
 		} else {

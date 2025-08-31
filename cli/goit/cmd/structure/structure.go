@@ -12,6 +12,23 @@ const (
 	permPasta = 0755
 )
 
+func CreateStructureOther(templatePath, nomeProjeto string) error {
+	err := os.Mkdir(nomeProjeto, permPasta)
+	if err != nil {
+		return fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
+	}
+
+	templates, err := file.PercorrerDiretorio(templatePath)
+	if err != nil {
+		return fmt.Errorf("erro ao percorrer pasta do diretório\npasta: %s -- %w", templatePath, err)
+	}
+
+	// renderizando templates
+	RenderTemplates(templates, TemplateData{ProjectName: nomeProjeto}, nomeProjeto)
+
+	return nil
+}
+
 func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (utils.ConfigPaths, error) {
 	var configPaths utils.ConfigPaths
 
@@ -32,6 +49,12 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 		if err != nil {
 			return configPaths, fmt.Errorf("erro ao renderizar templates: %w", err)
 		}
+	}
+
+	if tipoProjeto == "Frontend" || tipoProjeto == "FullStack" {
+		// rodar com o vite
+		fmt.Println("Criando Frontend do projeto...")
+		utils.CmdExecuteInDir(filepath.Join(nomeProjeto), "npm", "create", "vite@latest", "frontend")
 	}
 
 	switch linguagem {
