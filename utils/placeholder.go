@@ -9,7 +9,7 @@ import (
 func InsertAfterPlaceholder(fileContent, placeholder, contentToAdd string) (string, error) {
 
 	if !strings.Contains(fileContent, placeholder) {
-		return "", fmt.Errorf("marcador '%s' não encontrado", placeholder)
+		return "", fmt.Errorf("marcador '%s' não encontrado", placeholder)
 	}
 
 	// Prepara a string de substituição: o próprio placeholder, uma nova linha e o conteúdo.

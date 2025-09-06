@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	cmd.Execute("1.0.0") // Versão do GPO, pode ser alterada conforme necessário
+	cmd.Execute("1.0.0") // Versão do GPO, pode ser alterada confmt.Errorfe necessário
 }

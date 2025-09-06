@@ -9,7 +9,7 @@ import (
 func RunStaticFmt(configProject utils.ConfigProject) error {
 	if !isStaticCheckAvaible() {
 		if err := installStaticCheck(); err != nil {
-			return fmt.Errorf("erro ao instalar o static: %w", err)
+			return fmt.Errorf("erro ao instalar o static: %w", err)
 		}
 	}
 
@@ -21,7 +21,7 @@ func RunStaticFmt(configProject utils.ConfigProject) error {
 		go func() {
 			defer wg.Done()
 			if err := goFmt(configProject.Run.Lint.LintBackEnd); err != nil {
-				msgChan <- fmt.Errorf("erro ao formatar: %v", err)
+				msgChan <- fmt.Errorf("erro ao fmt.Errorfatar: %v", err)
 			}
 		}()
 	}
@@ -31,7 +31,7 @@ func RunStaticFmt(configProject utils.ConfigProject) error {
 		go func() {
 			defer wg.Done()
 			if err := staticLint(configProject.Run.Lint.LintBackEnd); err != nil {
-				msgChan <- fmt.Errorf("erro ao rodar linter: %v", err)
+				msgChan <- fmt.Errorf("erro ao rodar linter: %v", err)
 			}
 		}()
 	}

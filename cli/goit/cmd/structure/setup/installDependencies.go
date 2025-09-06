@@ -10,19 +10,19 @@ func InstallDependenciesGo(projectPath, framework, db string) error {
 	case "Gin":
 		err := utils.CmdExecuteInDir(projectPath, "go", "get", "github.com/gin-gonic/gin")
 		if err != nil {
-			return fmt.Errorf("erro ao instalar Gin: %w", err)
+			return fmt.Errorf("erro ao instalar Gin: %w", err)
 		}
 
 	case "Echo":
 		err := utils.CmdExecuteInDir(projectPath, "go", "get", "github.com/labstack/echo/v4")
 		if err != nil {
-			return fmt.Errorf("erro ao instalar Echo: %w", err)
+			return fmt.Errorf("erro ao instalar Echo: %w", err)
 		}
 
 	case "Fiber":
 		err := utils.CmdExecuteInDir(projectPath, "go", "get", "github.com/gofiber/fiber/v2")
 		if err != nil {
-			return fmt.Errorf("erro ao instalar Fiber: %w", err)
+			return fmt.Errorf("erro ao instalar Fiber: %w", err)
 		}
 	}
 
@@ -30,25 +30,25 @@ func InstallDependenciesGo(projectPath, framework, db string) error {
 	case "PostgreSQL":
 		err := utils.CmdExecuteInDir(projectPath, "go", "get", "gorm.io/driver/postgres", "gorm.io/gorm")
 		if err != nil {
-			return fmt.Errorf("erro ao instalar Gorm com PostgreSQL: %w", err)
+			return fmt.Errorf("erro ao instalar Gorm com PostgreSQL: %w", err)
 		}
 
 	case "MySQL":
 		err := utils.CmdExecuteInDir(projectPath, "go", "get", "gorm.io/driver/mysql", "gorm.io/gorm")
 		if err != nil {
-			return fmt.Errorf("erro ao instalar Gorm com MySQL: %w", err)
+			return fmt.Errorf("erro ao instalar Gorm com MySQL: %w", err)
 		}
 
 	case "SQLite":
 		err := utils.CmdExecuteInDir(projectPath, "go", "get", "gorm.io/driver/sqlite", "gorm.io/gorm")
 		if err != nil {
-			return fmt.Errorf("erro ao instalar Gorm com SQLite: %w", err)
+			return fmt.Errorf("erro ao instalar Gorm com SQLite: %w", err)
 		}
 
 		// case "MongoDB":
 		// 	err := installGoMongo()
 		// 	if err != nil {
-		// 		return fmt.Errorf("erro ao instalar Gorm com MongoDB: %w", err)
+		// 		return fmt.Errorf("erro ao instalar Gorm com MongoDB: %w", err)
 		// 	}
 
 	}

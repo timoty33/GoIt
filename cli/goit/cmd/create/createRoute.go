@@ -24,13 +24,13 @@ func UpdateRoutesFile(routeName, method, handlerName string, configs utils.Confi
 
 	content, err := file.ReadFile(configs.RoutesFile)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao ler arquivo: %w", err)
+		return fmt.Errorf("❌ Erro ao ler arquivo: %w", err)
 	}
 
 	// Usa a função utilitária para inserir o conteúdo. A indentação é adicionada aqui.
 	newContent, err := utils.InsertAfterPlaceholder(content, placeholder, "\t"+newRouteLine)
 	if err != nil {
-		return fmt.Errorf("❌ Falha ao atualizar o arquivo de rotas '%s': %w", configs.RoutesFile, err)
+		return fmt.Errorf("❌ Falha ao atualizar o arquivo de rotas '%s': %w", configs.RoutesFile, err)
 	}
 
 	return os.WriteFile(configs.RoutesFile, []byte(newContent), 0644)

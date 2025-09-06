@@ -10,7 +10,7 @@ func TitleNameVerify(name string) (string, error) {
 	var titleName string
 
 	if !isValidIdentifier(name) {
-		return titleName, fmt.Errorf("❌ Nome de handler inválido: '%s'. Use apenas letras e números, começando com uma letra", name)
+		return titleName, fmt.Errorf("❌ Nome de handler inválido: '%s'. Use apenas letras e números, começando com uma letra", name)
 	}
 
 	// Capitaliza a primeira letra corretamente

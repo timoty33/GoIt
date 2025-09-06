@@ -13,14 +13,14 @@ func CreateMigration(name, nameVerify, modelName string, configs utils.ConfigPat
 
 		err := file.CreateArqVerify(configs.MigrationsFolder, filepath.Join(configs.MigrationsFolder, name+".go"), name+".go", content)
 		if err != nil {
-			return fmt.Errorf("❌ Erro ao criar migration: %w", err)
+			return fmt.Errorf("❌ Erro ao criar migration: %w", err)
 		}
 	} else {
 		content := createMigrationFileContent(nameVerify)
 
 		err := file.CreateArqVerify(configs.MigrationsFolder, filepath.Join(configs.MigrationsFolder, name+".go"), name+".go", content)
 		if err != nil {
-			return fmt.Errorf("❌ Erro ao criar migration: %w", err)
+			return fmt.Errorf("❌ Erro ao criar migration: %w", err)
 		}
 	}
 

@@ -16,7 +16,7 @@ var updateCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := goitPluginOrganizer.UpdatePlugin(args)
 		if err != nil {
-			return fmt.Errorf("erro ao atualizar o plugin: %w", err)
+			return fmt.Errorf("erro ao atualizar o plugin: %w", err)
 		}
 		return nil
 	},

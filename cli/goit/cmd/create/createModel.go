@@ -20,7 +20,7 @@ import (
 
 		err := file.CreateArqVerify(configs.ModelsFolder, filepath.Join(configs.ModelsFolder, modelName+".go"), modelName, content)
 		if err != nil {
-			return fmt.Errorf("❌ Erro ao criar modelo: %w", err)
+			return fmt.Errorf("❌ Erro ao criar modelo: %w", err)
 		}
 
 	} else {
@@ -31,7 +31,7 @@ import (
 
 		err := file.CreateArqVerify(configs.ModelsFolder, filepath.Join(configs.ModelsFolder, modelName+".go"), modelName, content)
 		if err != nil {
-			return fmt.Errorf("❌ Erro ao criar modelo: %w", err)
+			return fmt.Errorf("❌ Erro ao criar modelo: %w", err)
 		}
 	}
 

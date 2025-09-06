@@ -12,7 +12,7 @@ import (
 func CreateHandlerFile(nomeHandler, method string, configs utils.ConfigPaths, params []string) error {
 	nomeFunc, err := utils.TitleNameVerify(nomeHandler)
 	if err != nil {
-		return fmt.Errorf("❌ O nome não pode ser usado, %w", err)
+		return fmt.Errorf("❌ O nome não pode ser usado, %w", err)
 	}
 
 	content := `package handler
@@ -35,7 +35,7 @@ func ` + nomeFunc + `(c *gin.Context) {
 	fullPath := filepath.Join(configs.HandlersFolder, nomeHandler+".go")
 
 	if err := file.CreateArqVerify(configs.HandlersFolder, fullPath, nomeHandler, content); err != nil {
-		return fmt.Errorf("❌ Algum erro aconteceu ao criar o arquivo: %w", err)
+		return fmt.Errorf("❌ Algum erro aconteceu ao criar o arquivo: %w", err)
 	}
 
 	return nil
@@ -44,7 +44,7 @@ func ` + nomeFunc + `(c *gin.Context) {
 func CreateHandler(nomeHandler, method string, configs utils.ConfigPaths, params []string) error {
 	nomeFunc, err := utils.TitleNameVerify(nomeHandler)
 	if err != nil {
-		return fmt.Errorf("❌ O nome não pode ser usado, %w", err)
+		return fmt.Errorf("❌ O nome não pode ser usado, %w", err)
 	}
 
 	content := fmt.Sprintf("func %s(c *gin.Context) {\n", nomeFunc)
@@ -58,14 +58,14 @@ func CreateHandler(nomeHandler, method string, configs utils.ConfigPaths, params
 
 	handleFileContentByte, err := os.ReadFile(configs.HandlersFile)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao ler o arquivo de handlers, %w", err)
+		return fmt.Errorf("❌ Erro ao ler o arquivo de handlers, %w", err)
 	}
 
 	handleFileContent := string(handleFileContentByte)
 
 	newContentFile, err := utils.InsertAfterPlaceholder(handleFileContent, "goit:add-handlers-here", content)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao injetar handler no arquivo, %w", err)
+		return fmt.Errorf("❌ Erro ao injetar handler no arquivo, %w", err)
 	}
 
 	return os.WriteFile(configs.HandlersFile, []byte(newContentFile), 0644)

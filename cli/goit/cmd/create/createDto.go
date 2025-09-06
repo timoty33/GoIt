@@ -21,17 +21,17 @@ func CreateDto(camps []string, dtoName string, configs utils.ConfigPaths) error 
 
 	fileContent, err := file.ReadFile(configs.DtoFile)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao ler arquivo, %w", err)
+		return fmt.Errorf("❌ Erro ao ler arquivo, %w", err)
 	}
 
 	newFileContent, err := utils.InsertAfterPlaceholder(fileContent, "goit:add-dtos-here", content)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao usar marcador, %w", err)
+		return fmt.Errorf("❌ Erro ao usar marcador, %w", err)
 	}
 
 	err = os.WriteFile(configs.DtoFile, []byte(newFileContent), 0644)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao injetar código, %w", err)
+		return fmt.Errorf("❌ Erro ao injetar código, %w", err)
 	}
 
 	return nil
@@ -59,7 +59,7 @@ type %s struct {
 	// Usa função utilitária para criar e salvar o arquivo com verificação
 	err := file.CreateArqVerify(folder, fullPath, fileName, content)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao criar DTO: %w", err)
+		return fmt.Errorf("❌ Erro ao criar DTO: %w", err)
 	}
 
 	fmt.Printf("✅ DTO %s criado com sucesso em: %s\n", dtoName, fullPath)
@@ -70,14 +70,14 @@ func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Confi
 	handlerFolder := configs.HandlersFolder
 	files, err := os.ReadDir(handlerFolder)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao ler pasta de handlers: %w", err)
+		return fmt.Errorf("❌ Erro ao ler pasta de handlers: %w", err)
 	}
 
 	// Regex para encontrar a função do handler
 	caso := fmt.Sprintf(`func %s\(c \*gin.Context\) \{`, handlerName)
 	re, err := regexp.Compile(caso)
 	if err != nil {
-		return fmt.Errorf("❌ Erro ao compilar regex: %w", err)
+		return fmt.Errorf("❌ Erro ao compilar regex: %w", err)
 	}
 
 	// Criar o código que será injetado
@@ -88,7 +88,7 @@ func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Confi
 	case "OUTPUT":
 		dtoCode = createDtoContentOutput(dtoName)
 	default:
-		return fmt.Errorf("❌ Mode inválido: %s", mode)
+		return fmt.Errorf("❌ Mode inválido: %s", mode)
 	}
 
 	found := false
@@ -101,7 +101,7 @@ func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Confi
 		fullPath := filepath.Join(handlerFolder, arquivo.Name())
 		content, err := file.ReadFile(fullPath)
 		if err != nil {
-			return fmt.Errorf("❌ Erro ao ler %s: %w", fullPath, err)
+			return fmt.Errorf("❌ Erro ao ler %s: %w", fullPath, err)
 		}
 
 		if re.MatchString(content) {
@@ -114,7 +114,7 @@ func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Confi
 
 			err := os.WriteFile(fullPath, []byte(newContent), 0644)
 			if err != nil {
-				return fmt.Errorf("❌ Erro ao salvar %s: %w", fullPath, err)
+				return fmt.Errorf("❌ Erro ao salvar %s: %w", fullPath, err)
 			}
 
 			fmt.Printf("✅ DTO injetado com sucesso no handler %s (%s)\n", handlerName, arquivo.Name())
@@ -123,7 +123,7 @@ func UpdateHandlerWithDto(mode, handlerName, dtoName string, configs utils.Confi
 	}
 
 	if !found {
-		return fmt.Errorf("❌ Handler '%s' não encontrado em nenhum arquivo de %s", handlerName, handlerFolder)
+		return fmt.Errorf("❌ Handler '%s' não encontrado em nenhum arquivo de %s", handlerName, handlerFolder)
 	}
 
 	return nil

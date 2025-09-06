@@ -15,12 +15,12 @@ const (
 func CreateStructureOther(templatePath, nomeProjeto string) error {
 	err := os.Mkdir(nomeProjeto, permPasta)
 	if err != nil {
-		return fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
+		return fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
 	}
 
 	templates, err := file.PercorrerDiretorio(templatePath)
 	if err != nil {
-		return fmt.Errorf("erro ao percorrer pasta do diretório\npasta: %s -- %w", templatePath, err)
+		return fmt.Errorf("erro ao percorrer pasta do diretório\npasta: %s -- %w", templatePath, err)
 	}
 
 	// renderizando templates
@@ -34,7 +34,7 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 
 	err := os.Mkdir(nomeProjeto, permPasta)
 	if err != nil {
-		return configPaths, fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
+		return configPaths, fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
 	}
 
 	if tipoProjeto == "Backend" || tipoProjeto == "FullStack" {
@@ -42,12 +42,12 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 		// Renderiza os templates (backend, o front será criado com Vite)
 		templates, err := file.PercorrerDiretorio(filepath.Join(GetTemplatesPath(), linguagem, framework))
 		if err != nil {
-			return configPaths, fmt.Errorf("erro ao percorrer templates: %w", err)
+			return configPaths, fmt.Errorf("erro ao percorrer templates: %w", err)
 		}
 
 		err = RenderTemplates(templates, TemplateData{ProjectName: nomeProjeto}, nomeProjeto)
 		if err != nil {
-			return configPaths, fmt.Errorf("erro ao renderizar templates: %w", err)
+			return configPaths, fmt.Errorf("erro ao renderizar templates: %w", err)
 		}
 	}
 

@@ -3,7 +3,7 @@ package utils
 type LintType struct {
 	Lint         bool   `json:"lint"`
 	LintApply    bool   `json:"lint_apply"`
-	Format       bool   `json:"format"`
+	Format       bool   `json:"fmt.Errorfat"`
 	LintFrontEnd string `json:"frontend_path"` // caminho que será passado no biome
 	LintBackEnd  string `json:"backend_path"`  // caminho que será passado no linter
 }

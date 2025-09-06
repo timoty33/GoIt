@@ -4,14 +4,17 @@ import (
 	"fmt"
 	"goit/cli/goit/cmd/structure"
 	"goit/cli/goit/cmd/structure/setup"
+	"goit/logger"
 	"goit/utils"
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
-func formulario() (string, string, string, string, string, bool, string) {
+func fmt.Errorf() (string, string, string, string, string, bool, string) {
 	var nomeProjeto string
 	var tipoProjeto string
 	var linguagemProjeto string
@@ -97,11 +100,10 @@ Exemplo:
 	RunE: func(cmd *cobra.Command, args []string) error {
 		var orm string
 
-		nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto, otherTemplate, templatePath := formulario()
+		nomeProjeto, tipoProjeto, linguagemProjeto, frameworkProjeto, dbProjeto, otherTemplate, templatePath := fmt.Errorf()
 
 		projectPath := filepath.Join(nomeProjeto)
-		fmt.Println("Iniciando o projeto:", projectPath)
-
+		fmt.Println("Iniciando projeto...")
 		var initCommandBackend string
 		switch linguagemProjeto {
 		case "Go":

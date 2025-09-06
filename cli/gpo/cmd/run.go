@@ -15,12 +15,12 @@ var runCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		binPath, argsCommand, err := goitPluginOrganizer.CommandRun(args)
 		if err != nil {
-			return fmt.Errorf("erro ao preparar o comando: %w", err)
+			return fmt.Errorf("erro ao preparar o comando: %w", err)
 		}
 
 		configProject, configPaths, err := utils.LoadJsonConfig()
 		if err != nil {
-			return fmt.Errorf("erro ao carregar configuração: %w", err)
+			return fmt.Errorf("erro ao carregar configuração: %w", err)
 		}
 
 		configComplete := utils.Config{
@@ -30,7 +30,7 @@ var runCmd = &cobra.Command{
 
 		err = utils.CmdExecuteWithJSONInput(binPath, configComplete, argsCommand...) // o '...' desempacota o slice argsCommand
 		if err != nil {
-			return fmt.Errorf("erro ao executar o comando: %w", err)
+			return fmt.Errorf("erro ao executar o comando: %w", err)
 		}
 
 		return nil
