@@ -1,0 +1,36 @@
+package database
+
+import (
+	"fmt"
+	"log"
+	"os"
+
+    "{{ .ProjectName }}/internal/config"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+)
+
+var DB *gorm.DB
+
+func Connect() {
+	user := config.Getenv("DB_USER", "root")
+	password := config.Getenv("DB_PASSWORD", "admin")
+	host := config.Getenv("DB_HOST" , "localhost")
+	port := config.Getenv("DB_PORT", "3306")
+	dbname := config.Getenv("DB_NAME", "{{ .ProjectName }}")
+	charset := config.Getenv("DB_CHARSET", "utf8mb4")
+
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True&loc=Local",
+		user, password, host, port, dbname, charset,
+	)
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("error conecting to MySQL: %v", err)
+	}
+
+	DB = db
+	log.Println("Connected to MySQL database")
+}

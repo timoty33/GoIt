@@ -15,12 +15,12 @@ const (
 func CreateStructureOther(templatePath, nomeProjeto string) error {
 	err := os.Mkdir(nomeProjeto, permPasta)
 	if err != nil {
-		return fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
+		return fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
 	}
 
 	templates, err := file.PercorrerDiretorio(templatePath)
 	if err != nil {
-		return fmt.Errorf("erro ao percorrer pasta do diretório\npasta: %s -- %w", templatePath, err)
+		return fmt.Errorf("erro ao percorrer pasta do diretório\npasta: %s -- %w", templatePath, err)
 	}
 
 	// renderizando templates
@@ -29,12 +29,12 @@ func CreateStructureOther(templatePath, nomeProjeto string) error {
 	return nil
 }
 
-func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (utils.ConfigPaths, error) {
+func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto, dbProjeto string) (utils.ConfigPaths, error) {
 	var configPaths utils.ConfigPaths
 
 	err := os.Mkdir(nomeProjeto, permPasta)
 	if err != nil {
-		return configPaths, fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
+		return configPaths, fmt.Errorf("erro ao criar pasta do projeto %s: %w", nomeProjeto, err)
 	}
 
 	if tipoProjeto == "Backend" || tipoProjeto == "FullStack" {
@@ -42,12 +42,12 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 		// Renderiza os templates (backend, o front será criado com Vite)
 		templates, err := file.PercorrerDiretorio(filepath.Join(GetTemplatesPath(), linguagem, framework))
 		if err != nil {
-			return configPaths, fmt.Errorf("erro ao percorrer templates: %w", err)
+			return configPaths, fmt.Errorf("erro ao percorrer templates: %w", err)
 		}
 
 		err = RenderTemplates(templates, TemplateData{ProjectName: nomeProjeto}, nomeProjeto)
 		if err != nil {
-			return configPaths, fmt.Errorf("erro ao renderizar templates: %w", err)
+			return configPaths, fmt.Errorf("erro ao renderizar templates: %w", err)
 		}
 	}
 
@@ -75,17 +75,13 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 				DtoFolder: "internal/dto",
 				DtoFile:   "internal/dto/dto.go",
 
-				ModelsFolder: "internal/models",
+				ModelsFolder: "internal/database/models",
 
-				ServicesFolder: "internal/services",
+				MigrationsFolder: "internal/database/migrations",
 
-				MigrationsFolder: "internal/migrations",
-
-				RepositoryFolder: "internal/repository",
+				RepositoryFolder: "internal/database/repositories",
 				DatabaseFolder:   "internal/database",
 			}
-
-			return configPaths, nil
 
 		case "Fiber":
 
@@ -100,6 +96,7 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 		case "NestJS":
 
 		case "Fastify":
+
 		}
 
 	case "TypeScript":
@@ -109,6 +106,28 @@ func CreateStructure(nomeProjeto, linguagem, framework, tipoProjeto string) (uti
 		case "NestJS":
 
 		case "Fastify":
+
+		}
+
+	}
+
+	// criando .env e env_config para carregar credencias do DB
+	if dbProjeto != "None" {
+		if dbProjeto != "SQLite" {
+			err := utils.CmdExecuteInDir(filepath.Join(nomeProjeto), "goit", "env", "env_config.go")
+			if err != nil {
+				return configPaths, fmt.Errorf("error creating .env: %w", err)
+			}
+		}
+
+		templates, err := file.PercorrerDiretorio(filepath.Join(GetTemplatesPath(), linguagem, "db", dbProjeto))
+		if err != nil {
+			return configPaths, fmt.Errorf("error getting templates: %w", err)
+		}
+
+		err = RenderTemplates(templates, TemplateData{ProjectName: nomeProjeto}, filepath.Join(nomeProjeto, configPaths.DatabaseFolder))
+		if err != nil {
+			return configPaths, fmt.Errorf("error creating db client: %w", err)
 		}
 	}
 

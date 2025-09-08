@@ -1,0 +1,20 @@
+package database
+
+import (
+	"log"
+
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+)
+
+var DB *gorm.DB
+
+// Connect abre a conexão com o SQLite e retorna a instância do GORM.
+func Connect(path string) *gorm.DB {
+	db, err := gorm.Open(sqlite.Open(path), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("error conecting to sqlite: %v", err)
+	}
+	return db
+}
+

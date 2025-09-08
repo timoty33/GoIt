@@ -153,7 +153,7 @@ var createRoute = &cobra.Command{
 
 		default:
 			fmt.Println("Programming language not suported...", configProject.ProgrammingLanguage)
-			return fmt.Errorf("programming language not suported", configProject.ProgrammingLanguage)
+			return fmt.Errorf("programming language not suported: %s", configProject.ProgrammingLanguage)
 		}
 
 		return nil
@@ -266,24 +266,24 @@ var createDto = &cobra.Command{
 
 			nameVerify, err := utils.TitleNameVerify(nome)
 			if err != nil {
-				return fmt.Errorf("Name cannot be used: %w", err)
+				return fmt.Errorf("name cannot be used: %w", err)
 			}
 
 			if newFile {
 				err := create.CreateDtoNewFile(camps, nameVerify, configsPath)
 				if err != nil {
-					return fmt.Errorf("Error creating new DTO: %w", err)
+					return fmt.Errorf("error creating new DTO: %w", err)
 				}
 			} else {
 				err := create.CreateDto(camps, nameVerify, configsPath)
 				if err != nil {
-					return fmt.Errorf("Error creating inline DTO: %w", err)
+					return fmt.Errorf("error creating inline DTO: %w", err)
 				}
 			}
 
 			err = create.UpdateHandlerWithDto(dtoMode, handlerName, nameVerify, configsPath)
 			if err != nil {
-				return fmt.Errorf("Error injecting DTO into handler: %w", err)
+				return fmt.Errorf("error injecting DTO into handler: %w", err)
 			}
 
 			fmt.Println("DTO created and handler updated successfully!")

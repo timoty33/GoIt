@@ -1,0 +1,38 @@
+package database
+
+import (
+	"fmt"
+	"log"
+	"os"
+
+    "{{ .ProjectName }}/internal/config"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+var DB *gorm.DB
+
+// Connect abre a conexão com o PostgreSQL usando variáveis de ambiente
+func Connect() {
+	host := config.GetEnv("DB_HOST", "localhost")
+	port := config.Getenv("DB_PORT", "5432")
+	user := config.Getenv("DB_USER", "postgres")
+	password := config.Getenv("DB_PASSWORD", "admin")
+	dbname := config.Getenv("DB_NAME", "{{ .ProjectName }}")
+	sslmode := config.Getenv("DB_SSLMODE", "disable")
+
+	dsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		host, user, password, dbname, port, sslmode,
+	)
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Error conecting PostgreSQL: %v", err)
+	}
+
+    log.Println("DB Conected successfully")
+
+    return db
+}

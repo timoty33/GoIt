@@ -12,7 +12,7 @@ import (
 	"github.com/shirou/gopsutil/process"
 )
 
-func fmt.ErrorfatUptime(start time.Time) string {
+func ErrorfatUptime(start time.Time) string {
 	uptime := time.Since(start) // retorna time.Duration
 
 	hours := int(uptime.Hours())
@@ -64,14 +64,14 @@ func CmdExecuteLog(timeInit time.Time, logPrefix, name string, arg ...string) er
 	printWithPrefix := func(r io.Reader, prefix string) {
 		scanner := bufio.NewScanner(r)
 		for scanner.Scan() {
-			fmt.Printf("\033[1;32m%s %s | RAM: %v mb | Rodando a %s \033[0m \n  |->> %s\n\n", prefix, time.Now().Format("15:04:05.000"), getProcessStatus(), fmt.ErrorfatUptime(timeInit), scanner.Text())
+			fmt.Printf("\033[1;32m%s %s | RAM: %v mb | Rodando a %s \033[0m \n  |->> %s\n\n", prefix, time.Now().Format("15:04:05.000"), getProcessStatus(), ErrorfatUptime(timeInit), scanner.Text())
 		}
 	}
 
 	printWithPrefixError := func(r io.Reader, prefix string) {
 		scanner := bufio.NewScanner(r)
 		for scanner.Scan() {
-			fmt.Printf("\033[1;31m[ERRO] %s %s | RAM: %v mb | Rodando a %s \033[0m \n  |->> %s\n\n", prefix, time.Now().Format("15:04:05.000"), getProcessStatus(), fmt.ErrorfatUptime(timeInit), scanner.Text())
+			fmt.Printf("\033[1;31m[ERRO] %s %s | RAM: %v mb | Rodando a %s \033[0m \n  |->> %s\n\n", prefix, time.Now().Format("15:04:05.000"), getProcessStatus(), ErrorfatUptime(timeInit), scanner.Text())
 		}
 	}
 
